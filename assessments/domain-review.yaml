@@ -1,0 +1,113 @@
+schema_version: 1
+kind: question_bank
+id: ats030-domain-review
+course_id: ATS030
+exam_code: CKAD
+status: draft
+provenance: Original practice material; not official examination questions.
+scope:
+  type: domain
+  id: domain-review
+  title: Services and Networking
+placement:
+  position: after
+  reading: sections/section-030/module-02/course-02-summary.md
+questions:
+- id: ats030-domain-review-q01
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Evaluate additive ingress and egress allowances.
+  source_readings:
+  - sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
+  prompt: A new policy allows traffic that an earlier restrictive policy did not allow. Why can access
+    increase?
+  options:
+  - id: a
+    text: The earlier policy must automatically delete the new resource
+    explanation: That is not the declared model.
+  - id: b
+    text: Policy YAML cannot ever affect traffic
+    explanation: Enforcing implementations can apply the supported rules.
+  - id: c
+    text: Applicable allow rules add to the effective traffic set
+    explanation: Policy evaluation is not a general newest-rule deny ordering.
+  correct_option: c
+  explanation: Policy evaluation is not a general newest-rule deny ordering.
+- id: ats030-domain-review-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Diagnose address, listener and policy failures separately.
+  source_readings:
+  - sections/section-010/module-02/course-01-dns-and-service-discovery.md
+  prompt: A client can resolve a backend name but cannot connect to its listener. Where should diagnosis
+    continue?
+  options:
+  - id: a
+    text: Assume a persistent volume backup will fix the connection
+    explanation: Storage recovery does not establish listener reachability.
+  - id: b
+    text: Port, backend availability and applicable network controls
+    explanation: Resolution and transport success are separate conditions.
+  - id: c
+    text: Only repeat the same hostname lookup indefinitely
+    explanation: That does not test the next failed relationship.
+  correct_option: b
+  explanation: Resolution and transport success are separate conditions.
+- id: ats030-domain-review-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Distinguish Service port, target port and application listener.
+  source_readings:
+  - sections/section-020/module-01/course-01-selectors-ports-and-backends.md
+  prompt: A process binds only to loopback in its Pod. Can a correct Service target alone make Pod-address
+    traffic work?
+  options:
+  - id: a
+    text: No; the listener must accept the intended reachable address
+    explanation: Port mapping cannot change where the application binds.
+  - id: b
+    text: Yes; declaring containerPort rewrites the process listener
+    explanation: The field does not universally reconfigure the application.
+  - id: c
+    text: Yes; every Service shares the backend's loopback namespace
+    explanation: A Service is not another container in that Pod's shared namespace.
+  correct_option: a
+  explanation: Port mapping cannot change where the application binds.
+- id: ats030-domain-review-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Trace host and Service port matching.
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: A host rule is correct but the backend has no ready selected endpoints. What remains broken?
+  options:
+  - id: a
+    text: The resource automatically stops being an Ingress
+    explanation: The kind remains unchanged.
+  - id: b
+    text: The certificate automatically repairs readiness
+    explanation: Transport identity does not fix application health.
+  - id: c
+    text: The Service-to-backend availability relationship
+    explanation: Matching a route does not create useful backend capacity.
+  correct_option: c
+  explanation: Matching a route does not create useful backend capacity.
+- id: ats030-domain-review-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Verify the intended host, path and secure application response.
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: Why preserve host, path and protocol during an external diagnostic request?
+  options:
+  - id: a
+    text: A changed host always selects the same backend
+    explanation: Host rules can distinguish applications and fallback handling.
+  - id: b
+    text: They determine whether the intended route and security contract are exercised
+    explanation: Testing a different request can yield irrelevant routing behavior.
+  - id: c
+    text: Only the controller's address matters
+    explanation: The request's other matching fields can change route selection.
+  correct_option: b
+  explanation: Testing a different request can yield irrelevant routing behavior.

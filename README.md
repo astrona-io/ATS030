@@ -1,18 +1,20 @@
-# ATS030 — CKAD: Services and Networking
+# Services and Networking (ATS030)
 
-Preparation for the **Services and Networking** domain of **Certified Kubernetes Application Developer (CKAD)**.
-The published domain weight is **20%**. This repository belongs to
-the [ATP006 training path](https://github.com/astrona-io/ATP006).
+Certified Kubernetes Application Developer (CKAD): Services and Networking, worth 20% of the official curriculum. This course belongs to ATP006.
 
-**Status:** Preparation scaffold; content authoring has not started.
+Developed reading lessons explain configuration, component responsibility, worked reasoning and failure limits. Every section has an introduction, and every module ends with a summary. Reusable YAML knowledge checks are indexed separately. Technical content remains draft.
 
-The initial commit reserves the curriculum structure. Lessons, playgrounds,
-labs and assessments are planned and are not ready for learner use.
+## Course Outline
 
-See [CURRICULUM.md](CURRICULUM.md) for the objective map and authoring checklist,
-[astrona.yaml](astrona.yaml) for the course manifest, and
-[CLAUDE.md](CLAUDE.md) for writing and environment rules.
+| Section / module | Module | Teaching lessons |
+| --- | --- | --- |
+| 010 / 01 | NetworkPolicy Selection And Allowed Connections | NetworkPolicy And Allowed Connections; Traffic Isolation And Allowed Peers |
+| 010 / 02 | Dependency-Aware Network Isolation | DNS And Service Discovery |
+| 020 / 01 | Services, Ports And Ready Backends | Selectors, Ports And Backends; Pod Addresses And Network Implementation |
+| 020 / 02 | Troubleshooting A Service Request | Tracing A Service Request |
+| 030 / 01 | Ingress Routing And TLS Contracts | Matching Ingress Hosts, Paths And Service Backends |
+| 030 / 02 | External Request Diagnosis | Tracing An External Request To The Application |
 
-Curriculum source: [official CKAD page](https://training.linuxfoundation.org/certification/certified-kubernetes-application-developer-ckad/), checked 2026-10-10.
-License: [Apache-2.0](LICENSE). Curriculum objectives retain attribution to
-The Linux Foundation and CNCF; see [CNCF curriculum licensing](https://github.com/cncf/curriculum).
+## Author Review
+
+The [curriculum map](CURRICULUM.md) records objective coverage. [Sources](SOURCES.md) support author review, and [assessment documentation](ASSESSMENTS.md) describes the reusable YAML contract. No runtime is required or claimed, and no new labs or playgrounds are included.
