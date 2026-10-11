@@ -1,5 +1,5 @@
 version: 1
-approval: CKAD requested 2026-10-11; established reading-only scope
+approval: CKAD playgrounds and guided practice requested 2026-10-12; no new graded labs.
 course:
   id: ATS030
   certification:
@@ -13,7 +13,7 @@ course:
     - Provide and troubleshoot access to applications via services
     - Use Ingress rules to expose applications
 defaults:
-  playground: false
+  playground: true
   module_lab: false
   capstone: false
   section_quiz: true
@@ -36,13 +36,18 @@ sections:
     outline:
     - NetworkPolicy And Allowed Connections
     - Traffic Isolation And Allowed Peers
-    playground: false
+    - Enforce Ingress Isolation And One Allowed Peer
+    playground: true
     module_lab: false
     sources:
     - reading: sections/section-010/module-01/course-01-networkpolicy-and-allowed-connections.md
       adapted_from: ATS038/sections/section-010/module-03/course-01-networkpolicy-and-allowed-connections.md
     - reading: sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
       adapted_from: ATS043/sections/section-080/module-01/course-01-traffic-isolation-and-allowed-peers.md
+    - reading: sections/section-010/module-01/course-03-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-010/module-01/course-03-guided-practice.md
   - id: module-02
     title: Dependency-Aware Network Isolation
     objectives:
@@ -52,11 +57,16 @@ sections:
     - Diagnose address, listener and policy failures separately.
     outline:
     - DNS And Service Discovery
-    playground: false
+    - Allow DNS And The Application As Separate Dependencies
+    playground: true
     module_lab: false
     sources:
     - reading: sections/section-010/module-02/course-01-dns-and-service-discovery.md
       adapted_from: ATS038/sections/section-010/module-01/course-02-dns-and-service-discovery.md
+    - reading: sections/section-010/module-02/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-010/module-02/course-02-guided-practice.md
 - id: section-020
   title: Provide and troubleshoot access to applications via services
   curriculum_item: Provide and troubleshoot access to applications via services
@@ -73,13 +83,18 @@ sections:
     outline:
     - Selectors, Ports And Backends
     - Pod Addresses And Network Implementation
-    playground: false
+    - Repair A Service Target Port
+    playground: true
     module_lab: false
     sources:
     - reading: sections/section-020/module-01/course-01-selectors-ports-and-backends.md
       adapted_from: ATS038/sections/section-010/module-02/course-01-selectors-ports-and-backends.md
     - reading: sections/section-020/module-01/course-02-pod-addresses-and-network-implementation.md
       adapted_from: ATS038/sections/section-010/module-01/course-01-pod-addresses-and-network-implementation.md
+    - reading: sections/section-020/module-01/course-03-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-020/module-01/course-03-guided-practice.md
   - id: module-02
     title: Troubleshooting A Service Request
     objectives:
@@ -89,11 +104,16 @@ sections:
     - Choose a correction supported by the first failed relationship.
     outline:
     - Tracing A Service Request
-    playground: false
+    - Trace A Missing Backend To Its Selector
+    playground: true
     module_lab: false
     sources:
     - reading: sections/section-020/module-02/course-01-tracing-a-service-request.md
       adapted_from: ATS038/sections/section-030/module-02/course-02-tracing-a-service-request.md
+    - reading: sections/section-020/module-02/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-020/module-02/course-02-guided-practice.md
 - id: section-030
   title: Use Ingress rules to expose applications
   curriculum_item: Use Ingress rules to expose applications
@@ -109,11 +129,16 @@ sections:
     - Explain TLS termination and backend protocol limits.
     outline:
     - Matching Ingress Hosts, Paths And Service Backends
-    playground: false
+    - Route A Host And Path Through An Ingress Controller
+    playground: true
     module_lab: false
     sources:
     - reading: sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
       adapted_from: null
+    - reading: sections/section-030/module-01/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-030/module-01/course-02-guided-practice.md
   - id: module-02
     title: External Request Diagnosis
     objectives:
@@ -123,8 +148,13 @@ sections:
     - Verify the intended host, path and secure application response.
     outline:
     - Tracing An External Request To The Application
-    playground: false
+    - Locate A Broken Ingress Backend Reference
+    playground: true
     module_lab: false
     sources:
     - reading: sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
       adapted_from: null
+    - reading: sections/section-030/module-02/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-030/module-02/course-02-guided-practice.md

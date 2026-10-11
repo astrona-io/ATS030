@@ -19,3 +19,5 @@ Each module begins with its goals and ends with a summary. Reusable YAML knowled
 - Identify whether the controller or backend produced a response.
 - Evaluate endpoint readiness, ports and applicable traffic policy.
 - Verify the intended host, path and secure application response.
+
+Each module pairs its concept readings with a guided practical sequence in an isolated playground. Finish the practice and closing summary before moving on. The YAML knowledge checks remain separate from the environment lifecycle.

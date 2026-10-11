@@ -1,9 +1,9 @@
-# Reading-only course. YAML assessments are registered separately in assessments/index.yaml.
+# CKAD concepts, module playgrounds and guided practice; YAML checks are indexed separately.
 training:
   id: ATS030
   title: 'CKAD: Services and Networking'
-  description: Detailed reading lessons and reusable YAML knowledge checks covering the CKAD domain. No
-    new labs or playgrounds. Technical content remains draft for review.
+  description: Detailed CKAD teaching with module playgrounds, guided hands-on practice and reusable YAML
+    knowledge checks. Technical content remains draft for review.
   certification:
     name: Certified Kubernetes Application Developer
     code: CKAD
@@ -50,8 +50,11 @@ modules:
     title: Traffic Isolation And Allowed Peers
     path: sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
   - type: reading
+    title: Enforce Ingress Isolation And One Allowed Peer
+    path: sections/section-010/module-01/course-03-guided-practice.md
+  - type: reading
     title: Summary
-    path: sections/section-010/module-01/course-03-summary.md
+    path: sections/section-010/module-01/course-04-summary.md
   - type: reading
     title: Dependency-Aware Network Isolation
     path: sections/section-010/module-02/course.md
@@ -59,8 +62,11 @@ modules:
     title: DNS And Service Discovery
     path: sections/section-010/module-02/course-01-dns-and-service-discovery.md
   - type: reading
+    title: Allow DNS And The Application As Separate Dependencies
+    path: sections/section-010/module-02/course-02-guided-practice.md
+  - type: reading
     title: Summary
-    path: sections/section-010/module-02/course-02-summary.md
+    path: sections/section-010/module-02/course-03-summary.md
 - id: module-020
   title: Provide and troubleshoot access to applications via services
   description: Developed explanations and application reasoning for Provide and troubleshoot access to
@@ -80,8 +86,11 @@ modules:
     title: Pod Addresses And Network Implementation
     path: sections/section-020/module-01/course-02-pod-addresses-and-network-implementation.md
   - type: reading
+    title: Repair A Service Target Port
+    path: sections/section-020/module-01/course-03-guided-practice.md
+  - type: reading
     title: Summary
-    path: sections/section-020/module-01/course-03-summary.md
+    path: sections/section-020/module-01/course-04-summary.md
   - type: reading
     title: Troubleshooting A Service Request
     path: sections/section-020/module-02/course.md
@@ -89,8 +98,11 @@ modules:
     title: Tracing A Service Request
     path: sections/section-020/module-02/course-01-tracing-a-service-request.md
   - type: reading
+    title: Trace A Missing Backend To Its Selector
+    path: sections/section-020/module-02/course-02-guided-practice.md
+  - type: reading
     title: Summary
-    path: sections/section-020/module-02/course-02-summary.md
+    path: sections/section-020/module-02/course-03-summary.md
 - id: module-030
   title: Use Ingress rules to expose applications
   description: Developed explanations and application reasoning for Use Ingress rules to expose applications.
@@ -106,8 +118,11 @@ modules:
     title: Matching Ingress Hosts, Paths And Service Backends
     path: sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
   - type: reading
+    title: Route A Host And Path Through An Ingress Controller
+    path: sections/section-030/module-01/course-02-guided-practice.md
+  - type: reading
     title: Summary
-    path: sections/section-030/module-01/course-02-summary.md
+    path: sections/section-030/module-01/course-03-summary.md
   - type: reading
     title: External Request Diagnosis
     path: sections/section-030/module-02/course.md
@@ -115,5 +130,8 @@ modules:
     title: Tracing An External Request To The Application
     path: sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
   - type: reading
+    title: Locate A Broken Ingress Backend Reference
+    path: sections/section-030/module-02/course-02-guided-practice.md
+  - type: reading
     title: Summary
-    path: sections/section-030/module-02/course-02-summary.md
+    path: sections/section-030/module-02/course-03-summary.md
