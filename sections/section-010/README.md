@@ -9,6 +9,9 @@ This section covers demonstrate basic understanding of NetworkPolicies. You will
 
 Each module begins with its goals and ends with a summary. Reusable YAML knowledge checks follow the section summary and are registered separately for future presentation.
 
+
+You will calculate selected Pods and permitted connections before testing enforcement. Combined selectors, alternative peers and additive policies can produce different populations. Dependency-aware isolation must also preserve the resolver path needed before an application can contact its backend by name.
+
 ## Learning Outcomes
 
 - Explain policy selection and directional isolation.
