@@ -247,3 +247,7 @@ Primary author sources are recorded in `SOURCES.md`. The objective list was
 verified on 2026-10-11. Detailed reading expansions were written on 2026-10-11.
 Validate manifest paths, summary ordering, curriculum coverage and question
 contracts. Record actual runtime evidence when available. Static validation is not live verification; do not invent command output.
+
+### First graded lab scope — 2026-10-12
+
+The maintainer subsequently authorized starting graded labs after the CKAD, CKA and CKS reading expansions. This overrides the earlier no-new-graded-labs restriction for the independently scoped first lab in section-020/module-02/labs/lab-01. Preserve the module playground and existing question banks. The lab uses its own cluster and context, seeds only the intentional starting fault, and validates both required fields and the original client request. Its task, solution and launch README remain draft. Record static and runtime evidence separately.

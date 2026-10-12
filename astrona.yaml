@@ -1,9 +1,8 @@
-# CKAD concepts, module playgrounds and guided practice; YAML checks are indexed separately.
 training:
   id: ATS030
   title: 'CKAD: Services and Networking'
-  description: Detailed CKAD teaching with module playgrounds, guided hands-on practice and reusable YAML
-    knowledge checks. Technical content remains draft for review.
+  description: Detailed CKAD teaching with module playgrounds, guided hands-on practice
+    and reusable YAML knowledge checks. Technical content remains draft for review.
   certification:
     name: Certified Kubernetes Application Developer
     code: CKAD
@@ -33,8 +32,8 @@ modules:
     path: sections/intro/course-03-how-this-course-is-made.md
 - id: module-010
   title: Demonstrate basic understanding of NetworkPolicies
-  description: Developed explanations and application reasoning for Demonstrate basic understanding of
-    NetworkPolicies.
+  description: Developed explanations and application reasoning for Demonstrate basic
+    understanding of NetworkPolicies.
   draft: true
   content:
   - type: reading
@@ -69,8 +68,8 @@ modules:
     path: sections/section-010/module-02/course-03-summary.md
 - id: module-020
   title: Provide and troubleshoot access to applications via services
-  description: Developed explanations and application reasoning for Provide and troubleshoot access to
-    applications via services.
+  description: Developed explanations and application reasoning for Provide and troubleshoot
+    access to applications via services.
   draft: true
   content:
   - type: reading
@@ -98,6 +97,26 @@ modules:
     title: Tracing A Service Request
     path: sections/section-020/module-02/course-01-tracing-a-service-request.md
   - type: reading
+    title: "Repair A Service Target Port \u2014 Task"
+    path: sections/section-020/module-02/labs/lab-01/question.md
+  - type: lab
+    title: Repair A Service Target Port
+    path: sections/section-020/module-02/labs/lab-01
+    difficulty: beginner
+    estimated_duration: 15m
+    topic: services
+    task_kind: troubleshooting
+    learning_goals:
+    - Restore the existing client request by correcting the Service backend mapping.
+    tags:
+    - ckad
+    - service
+    - targetport
+    - troubleshooting
+  - type: reading
+    title: "Repair A Service Target Port \u2014 Solution"
+    path: sections/section-020/module-02/labs/lab-01/solution.md
+  - type: reading
     title: Trace A Missing Backend To Its Selector
     path: sections/section-020/module-02/course-02-guided-practice.md
   - type: reading
@@ -105,7 +124,8 @@ modules:
     path: sections/section-020/module-02/course-03-summary.md
 - id: module-030
   title: Use Ingress rules to expose applications
-  description: Developed explanations and application reasoning for Use Ingress rules to expose applications.
+  description: Developed explanations and application reasoning for Use Ingress rules
+    to expose applications.
   draft: true
   content:
   - type: reading

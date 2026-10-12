@@ -1,5 +1,6 @@
 version: 1
-approval: CKAD playgrounds and guided practice requested 2026-10-12; no new graded labs.
+approval: CKAD playgrounds and guided practice requested 2026-10-12; no new graded
+  labs. Maintainer authorized graded labs after material expansion on 2026-10-12.
 course:
   id: ATS030
   certification:
@@ -106,7 +107,7 @@ sections:
     - Tracing A Service Request
     - Trace A Missing Backend To Its Selector
     playground: true
-    module_lab: false
+    module_lab: true
     sources:
     - reading: sections/section-020/module-02/course-01-tracing-a-service-request.md
       adapted_from: ATS038/sections/section-030/module-02/course-02-tracing-a-service-request.md
@@ -114,6 +115,13 @@ sections:
       adapted_from: null
     practice_readings:
     - sections/section-020/module-02/course-02-guided-practice.md
+    labs:
+    - id: lab-01
+      path: sections/section-020/module-02/labs/lab-01
+      objective: Restore the existing client request by correcting the Service backend
+        mapping.
+      status: draft
+      runtime_verification: pending
 - id: section-030
   title: Use Ingress rules to expose applications
   curriculum_item: Use Ingress rules to expose applications
