@@ -9,6 +9,9 @@ This section covers use Ingress rules to expose applications. You will study Ing
 
 Each module begins with its goals and ends with a summary. Reusable YAML knowledge checks follow the section summary and are registered separately for future presentation.
 
+
+You will trace an external request through controller selection, host and path matching, Service mapping and application processing. Frontend certificate trust is a separate boundary from route correctness and backend protocol. Verification names the component that actually produced the response.
+
 ## Learning Outcomes
 
 - Identify IngressClass and controller responsibility.
