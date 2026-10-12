@@ -9,6 +9,10 @@ This playground installs Traefik as an Ingress controller. The application Servi
 
 Use the module playground and its private kubeconfig. The context check below prevents commands from being directed at an unrelated cluster. The helper retries a command for a bounded interval after controller or policy changes; it cannot turn a persistent failure into success. Read the actual errors when the interval expires.
 
+The Ingress backend names a Service port, not the application's container port directly. The Service then resolves its own target port and ready endpoints. Keep route matching and backend mapping separate when inspecting a request.
+
+Traefik implements the class-specific route in this playground. Creating an Ingress without the appropriate class or controller is not enough. The client must use the intended hostname and path, and optional frontend TLS has its own trust and name requirements.
+
 <!-- astrona:playground:renew -->
 
 For a timed catalog session, renew this module before continuing. Skip renewal for an untimed local author run:

@@ -5,7 +5,7 @@ exam_objectives:
 ---
 # Ingress Routing And TLS Contracts
 
-This module connects intended application behavior to declared resources and observed conditions.
+A client requests `probe.local`, and Traefik chooses an Ingress route before forwarding to the `probe` Service. The Ingress object declares matching rules; the controller implements them. A rule stored without an active controller cannot provide the same routing behavior.
 
 ## Learning Goals
 
