@@ -5,7 +5,7 @@ exam_objectives:
 ---
 # External Request Diagnosis
 
-This module connects intended application behavior to declared resources and observed conditions.
+The frontend returns a routing error before the application logs a request. The request reached an intermediary, but that does not prove it reached `probe`. Diagnose hostname, path, certificate and backend selection as separate boundaries.
 
 ## Learning Goals
 

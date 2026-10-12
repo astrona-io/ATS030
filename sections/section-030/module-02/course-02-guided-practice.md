@@ -9,6 +9,10 @@ You will establish a working external request path, then point the Ingress at an
 
 Use the module playground and its private kubeconfig. The context check below prevents commands from being directed at an unrelated cluster. The helper retries a command for a bounded interval after controller or policy changes; it cannot turn a persistent failure into success. Read the actual errors when the interval expires.
 
+An error can originate in Traefik's route handling or in the application after forwarding. Compare route and endpoint evidence with the actual response before attributing the failure. A correct Service name does not establish a correct Ingress backend port.
+
+The local certificate is trusted explicitly for the matching practice hostname. The different-name request should fail certificate verification; disabling verification would remove that check. Frontend HTTPS and backend HTTP remain separate connections, and the short-lived certificate does not represent production public trust.
+
 <!-- astrona:playground:renew -->
 
 For a timed catalog session, renew this module before continuing. Skip renewal for an untimed local author run:
