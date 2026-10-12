@@ -9,6 +9,9 @@ This section covers provide and troubleshoot access to applications via services
 
 Each module begins with its goals and ends with a summary. Reusable YAML knowledge checks follow the section summary and are registered separately for future presentation.
 
+
+You will connect a stable access point to selected, ready backends and their actual listeners. Service ports, target ports and Pod addresses are distinct facts. Troubleshooting keeps the affected caller while following discovery, forwarding and response behavior.
+
 ## Learning Outcomes
 
 - Explain Service selection and EndpointSlice relationships.
