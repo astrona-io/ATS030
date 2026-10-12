@@ -5,7 +5,7 @@ exam_objectives:
 ---
 # NetworkPolicy Selection And Allowed Connections
 
-This module connects intended application behavior to declared resources and observed conditions.
+The `shuttle` client should reach `probe`, while an unrelated caller should not. A NetworkPolicy can express that network allowance only when the installed network implementation enforces it. Successful API creation is therefore not the complete security check.
 
 ## Learning Goals
 

@@ -9,6 +9,10 @@ This playground enables the Calico network-policy implementation. You will prove
 
 Use the module playground and its private kubeconfig. The context check below prevents commands from being directed at an unrelated cluster. The helper retries a command for a bounded interval after controller or policy changes; it cannot turn a persistent failure into success. Read the actual errors when the interval expires.
 
+A policy is a declaration, while the network implementation enforces allowed connections. Calico supplies that capability in this environment. Compare an intended allowed caller with a deliberately disallowed caller rather than treating policy creation as the enforcement test.
+
+Read peer selectors as structured conditions. Namespace and Pod selectors in one peer require both matches; separate peers form alternatives. The connection must also satisfy applicable source egress and destination ingress. Another applicable allowance can widen the union of permitted traffic.
+
 <!-- astrona:playground:renew -->
 
 For a timed catalog session, renew this module before continuing. Skip renewal for an untimed local author run:

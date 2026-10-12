@@ -9,4 +9,6 @@ NetworkPolicy declares allowed connection relationships for selected Pods when t
 
 Peer selectors, ports and required dependencies must be read together. A declared policy is not proof of enforcement, and permitted transport does not establish application identity or protect every allowed operation.
 
+NetworkPolicy selection and rule structure determine declared allowances, while an enforcing implementation determines effective traffic behavior. Combined selectors, alternative peers and additive policies need evaluation against actual labels and both connection endpoints.
+
 <!-- astrona:playground:destroy -->
