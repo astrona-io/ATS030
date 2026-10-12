@@ -9,6 +9,10 @@ An egress-isolated client needs access to name resolution and to the application
 
 Use the module playground and its private kubeconfig. The context check below prevents commands from being directed at an unrelated cluster. The helper retries a command for a bounded interval after controller or policy changes; it cannot turn a persistent failure into success. Read the actual errors when the interval expires.
 
+The caller needs to reach its resolver before a backend name is useful. Egress isolation can therefore break discovery even when the final backend is allowed. Read the actual resolver configuration and provisioned DNS components instead of assuming a label or address from another cluster.
+
+The namespace-qualified Service name distinguishes the intended backend from a same-named Service in another namespace. A successful lookup still leaves backend selection, policy and listener reachability unresolved. Keep DNS recovery and application connection recovery as separate observations.
+
 <!-- astrona:playground:renew -->
 
 For a timed catalog session, renew this module before continuing. Skip renewal for an untimed local author run:

@@ -5,7 +5,7 @@ exam_objectives:
 ---
 # Dependency-Aware Network Isolation
 
-This module connects intended application behavior to declared resources and observed conditions.
+Egress isolation allows the destination Pod but blocks the resolver. The application cannot look up `probe`, so it never reaches the permitted backend connection. Dependencies include name resolution as well as the final Service.
 
 ## Learning Goals
 
