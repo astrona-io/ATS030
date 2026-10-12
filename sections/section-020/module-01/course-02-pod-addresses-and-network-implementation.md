@@ -5,6 +5,22 @@ exam_objectives:
 ---
 # Pod Addresses And Network Implementation
 
+A Pod IP changes when the application is replaced, but the Service still provides the same access point. Pod addressing and Service forwarding are different network responsibilities. Understanding both helps localize a request failure.
+
+## Learning objectives
+
+- Distinguish Pod addresses from Service virtual addresses.
+- Explain network-plugin and Service-forwarding responsibilities.
+- Identify when direct backend evidence differs from Service-path evidence.
+
+## Before you start
+
+Use a shell on your own machine with the module playground running. A Pod is Kubernetes's unit for running one or more containers together. The environment provides the `probe` Deployment, which maintains application Pods, and the `starfleet` namespace, which groups these objects.
+
+Read-only commands below use kubectl, the Kubernetes command-line tool. Select the private kubeconfig: the file that identifies this environment's cluster and credentials. The commands do not change the application.
+
+## Pod Addresses and Network Implementation
+
 The `shuttle` Pod sends a request to the `probe` Pod on another node. Kubernetes gives Pods network identities so applications can communicate without needing to know which node hosts each process. Containers inside a normal Pod share its network namespace and can communicate through the local loopback address.
 
 The Kubernetes network model expects Pod-to-Pod communication across nodes without an application needing to translate its Pod address. The network implementation makes that model work through routing, encapsulation or other mechanisms. The details depend on the plugin, infrastructure and configured policy.
@@ -38,6 +54,42 @@ A Pod address identifies an instance. A Service address identifies a stable acce
 Replacement can change a Pod address while the Service address stays the same. This helps clients avoid tracking every lifecycle event. Long-lived connections can still point to a failed backend, so applications need appropriate reconnection and safe retries. Stable discovery does not make every established connection immortal.
 
 When explaining a failure, identify whether the client uses an instance address or a Service abstraction, whether the path crosses nodes and which component implements that path. Then consider traffic policy and the listener. These details turn a broad “networking is broken” symptom into a bounded question.
+
+## Inspect the mechanism
+
+Internet Protocol (IP) addresses identify network destinations. A Pod receives its own network context and address through the cluster's network arrangement. The Container Network Interface (CNI) integration participates in connecting Pod networking. Service forwarding separately maps a Service address to backend addresses using the implementation installed in the cluster.
+
+Some platforms replace parts of the usual forwarding arrangement with another implementation. Therefore a correct explanation names the responsibility rather than assuming every cluster uses the same daemon or rule format. Direct Pod reachability tests one path; Service reachability includes selection and virtual-address forwarding too. A result from one cannot automatically establish the other.
+
+```mermaid
+flowchart TB
+    C["Client connection"] --> S["Service virtual address"]
+    S --> F["Service forwarding"]
+    F --> P["Backend Pod address"]
+    N["Pod network connectivity"] --> P
+    P --> A["Application process"]
+```
+
+Service forwarding selects a destination whose underlying Pod network must also provide connectivity.
+
+<!-- astrona:playground:renew -->
+
+Select the private cluster connection and inspect the live state from your host shell:
+
+```sh
+export KUBECONFIG="$(astrona kubeconfig ats-030-playground-020-01)"
+if test "$(kubectl config current-context)" = "kind-astro-ats-030-playground-020-01"; then
+  kubectl -n starfleet get pods -l app=probe -o wide
+  kubectl -n starfleet get service probe -o wide
+  kubectl -n kube-system get daemonsets
+else
+  printf "Select this module's private kubeconfig before continuing.\n" >&2
+fi
+```
+
+Compare Pod IPs with the Service ClusterIP. They identify different access points. Read installed node components without assuming each name proves every feature is configured. Pod addresses are runtime observations rather than permanent application identity. These read-only commands do not demonstrate packet delivery or change node networking.
+
+You can now distinguish network responsibilities and avoid hard-coding replaceable Pod addresses. Investigation should compare the actual caller path, selected endpoint and network implementation before changing cluster-wide settings.
 
 ## Common pitfalls
 

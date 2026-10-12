@@ -5,6 +5,22 @@ exam_objectives:
 ---
 # Selectors, Ports And Backends
 
+The `probe` Service exposes port 80 while its selected application listens on port 8080. These ports describe two sides of forwarding. Correct labels cannot compensate for a target port that points to the wrong listener.
+
+## Learning objectives
+
+- Trace Service selection into ready EndpointSlice backends.
+- Distinguish client port, target port and listener.
+- Explain why Pod names do not establish Service membership.
+
+## Before you start
+
+Use a shell on your own machine with the module playground running. A Pod is Kubernetes's unit for running one or more containers together. The environment provides the `probe` Deployment, which maintains application Pods, and the `starfleet` namespace, which groups these objects.
+
+Read-only commands below use kubectl, the Kubernetes command-line tool. Select the private kubeconfig: the file that identifies this environment's cluster and credentials. The commands do not change the application.
+
+## Selectors, Ports and Backends
+
 The `probe` application has three Pods, and clients need one stable destination. A Service defines an access point and, for a selector-based Service, identifies backends by Pod labels. EndpointSlices store sets of network endpoints and related information, including readiness conditions used by forwarding implementations.
 
 A Service's `port` is the port exposed to clients. Its `targetPort` identifies the destination port on the backend. The application must actually listen at that destination. Changing the Service port does not reconfigure the application's listener.
@@ -32,6 +48,41 @@ EndpointSlices divide backend information into manageable records rather than re
 That distinction matters for databases or peer discovery. Publishing an endpoint is not the same as telling ordinary callers it can safely serve requests. An author should state which discovery and traffic behavior the application needs rather than assume every Service treats all endpoints identically.
 
 The stable Service abstraction helps absorb Pod replacement, but existing connections and application errors remain outside a promise of uninterrupted success. A complete explanation traces client port, selection, endpoint eligibility and destination listener. A healthy observation at one step cannot replace evidence at the next.
+
+## Inspect the mechanism
+
+The Service selector requires both `app: probe` and `release: probe`. The EndpointSlice controller uses matching Pods and their readiness to build backend information. Its stored ports reflect target-port resolution, including named port references. The network implementation consumes those backends when routing Service connections.
+
+The named target `http` refers to the selected Pod's declared port 8080. That declaration does not open a socket. The Python process must actually listen at the expected address and port. If selection is empty, investigate labels; if selected Pods are unready, investigate health; if ready endpoints use the wrong destination port, investigate mapping and listener. These are distinct defects.
+
+```mermaid
+flowchart TB
+    C["Client port 80"] --> S["Service selector"]
+    S --> E["Ready EndpointSlice backends"]
+    E --> P["Resolved target port 8080"]
+    P --> L["Python listener"]
+```
+
+Selection identifies the backend population, while port mapping identifies where that population must listen.
+
+<!-- astrona:playground:renew -->
+
+Select the private cluster connection and inspect the live state from your host shell:
+
+```sh
+export KUBECONFIG="$(astrona kubeconfig ats-030-playground-020-01)"
+if test "$(kubectl config current-context)" = "kind-astro-ats-030-playground-020-01"; then
+  kubectl -n starfleet get service probe -o yaml
+  kubectl -n starfleet get pods -l app=probe --show-labels
+  kubectl -n starfleet get endpointslices -l kubernetes.io/service-name=probe -o yaml
+else
+  printf "Select this module's private kubeconfig before continuing.\n" >&2
+fi
+```
+
+Match both selector keys, read endpoint readiness and compare Service port with EndpointSlice backend ports. Names and addresses vary between runs. A matching object name is not the selection mechanism. This inspection reveals the forwarding contract; a request from the intended client remains necessary to establish reachability through it.
+
+You can now explain the complete Service backend relationship. Its declared correctness is useful evidence, but actual application reachability and meaningful responses need caller-side verification.
 
 ## Common pitfalls
 

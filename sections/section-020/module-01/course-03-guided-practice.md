@@ -9,6 +9,10 @@ A Service selects ready endpoints and maps its incoming port to a target port. Y
 
 Use the module playground and its private kubeconfig. The context check below prevents commands from being directed at an unrelated cluster. The helper retries a command for a bounded interval after controller or policy changes; it cannot turn a persistent failure into success. Read the actual errors when the interval expires.
 
+The Service uses labels to select Pods and a named target port to select the backend listener port. Match each relationship explicitly. The application process must still bind that port; a containerPort field does not start a socket.
+
+EndpointSlice readiness and actual Pod addresses expose the selected backend population. These addresses can change during replacement while the Service access point remains stable. Inspect the population and mapping before treating an accepted Service as proof of usable traffic.
+
 <!-- astrona:playground:renew -->
 
 For a timed catalog session, renew this module before continuing. Skip renewal for an untimed local author run:

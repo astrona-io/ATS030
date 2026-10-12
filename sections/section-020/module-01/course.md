@@ -5,7 +5,7 @@ exam_objectives:
 ---
 # Services, Ports And Ready Backends
 
-This module connects intended application behavior to declared resources and observed conditions.
+The `probe` Service exposes port 80 while its selected application listens on port 8080. These ports describe two sides of forwarding. Correct labels cannot compensate for a target port that points to the wrong listener.
 
 ## Learning Goals
 
