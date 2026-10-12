@@ -1,0 +1,110 @@
+schema_version: 1
+kind: question_bank
+id: ats030-section-030
+course_id: ATS030
+exam_code: CKAD
+status: draft
+provenance: Original practice material; not official examination questions.
+scope:
+  type: section
+  id: section-030
+  title: Use Ingress rules to expose applications
+placement:
+  position: after
+  reading: sections/section-030/module-02/course-03-summary.md
+questions:
+- id: ats030-section-030-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Identify IngressClass and controller responsibility.
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: An Ingress is accepted but no controller handles its class. What can happen?
+  options:
+  - id: a
+    text: The API server always becomes the missing controller
+    explanation: The API server does not universally implement Ingress traffic handling.
+  - id: b
+    text: The backend gets a public route without infrastructure
+    explanation: External reachability still requires an appropriate implementation.
+  - id: c
+    text: The declaration produces no intended active route
+    explanation: Resource acceptance and traffic implementation are separate stages.
+  correct_option: c
+  explanation: Resource acceptance and traffic implementation are separate stages.
+- id: ats030-section-030-q02
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Compare exact, prefix and implementation-specific paths.
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: A Prefix path is /reports. Which request illustrates its path-element behavior?
+  options:
+  - id: a
+    text: Only the empty path can ever match
+    explanation: A prefix can match the declared path and its qualifying subpaths.
+  - id: b
+    text: /reports/daily can match while /reports-old is not the same prefix element
+    explanation: Prefix path matching uses path elements rather than arbitrary text prefix alone.
+  - id: c
+    text: Every path beginning with the letters reports must match
+    explanation: That ignores the element boundary.
+  correct_option: b
+  explanation: Prefix path matching uses path elements rather than arbitrary text prefix alone.
+- id: ats030-section-030-q03
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Trace host and Service port matching.
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: A Service exposes port 80 and targets 8080. Which port does the Ingress backend reference?
+  options:
+  - id: a
+    text: The Service's exposed port 80
+    explanation: The backend identifies the Service port contract.
+  - id: b
+    text: The container port 8080 even if absent from the Service ports
+    explanation: The Ingress backend does not directly bypass the Service port definition.
+  - id: c
+    text: The application's process ID
+    explanation: A process identifier is not a Service port.
+  correct_option: a
+  explanation: The backend identifies the Service port contract.
+- id: ats030-section-030-q04
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Explain TLS termination and backend protocol limits.
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: TLS terminates at an Ingress controller. What should be assumed about traffic to the backend?
+  options:
+  - id: a
+    text: It is always encrypted without additional configuration
+    explanation: Backend protocol behavior is implementation and configuration dependent.
+  - id: b
+    text: It uses no network connection
+    explanation: The controller still needs a path to the backend.
+  - id: c
+    text: Its protection depends on separate backend configuration
+    explanation: External TLS does not universally encrypt the next hop.
+  correct_option: c
+  explanation: External TLS does not universally encrypt the next hop.
+- id: ats030-section-030-q05
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Identify whether the controller or backend produced a response.
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: An external request returns not found. Why determine which component emitted it?
+  options:
+  - id: a
+    text: Every not-found response means the container crashed
+    explanation: A running application or controller can return that response.
+  - id: b
+    text: The error can come from route fallback or from the application
+    explanation: Response identity helps locate the failed relationship.
+  - id: c
+    text: The status alone always proves DNS failed
+    explanation: A returned application-layer response implies more context than a simple lookup failure.
+  correct_option: b
+  explanation: Response identity helps locate the failed relationship.

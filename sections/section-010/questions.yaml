@@ -1,0 +1,111 @@
+schema_version: 1
+kind: question_bank
+id: ats030-section-010
+course_id: ATS030
+exam_code: CKAD
+status: draft
+provenance: Original practice material; not official examination questions.
+scope:
+  type: section
+  id: section-010
+  title: Demonstrate basic understanding of NetworkPolicies
+placement:
+  position: after
+  reading: sections/section-010/module-02/course-03-summary.md
+questions:
+- id: ats030-section-010-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Explain policy selection and directional isolation.
+  source_readings:
+  - sections/section-010/module-01/course-01-networkpolicy-and-allowed-connections.md
+  prompt: What is required for a declared NetworkPolicy to control traffic?
+  options:
+  - id: a
+    text: Only a matching Markdown page title
+    explanation: Documentation does not implement network controls.
+  - id: b
+    text: Only a container image tag called secure
+    explanation: Artifact naming does not enforce traffic policy.
+  - id: c
+    text: An implementation that enforces the supported policy semantics
+    explanation: The resource alone is not proof of packet enforcement.
+  correct_option: c
+  explanation: The resource alone is not proof of packet enforcement.
+- id: ats030-section-010-q02
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Evaluate additive ingress and egress allowances.
+  source_readings:
+  - sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
+  prompt: Two applicable policies allow different ingress peers. How do their allowances combine?
+  options:
+  - id: a
+    text: All traffic is denied whenever two policies select a Pod
+    explanation: Multiple policies do not universally cause total denial.
+  - id: b
+    text: Allowed traffic is additive under the policy model
+    explanation: Applicable allow rules contribute to the effective allowed set.
+  - id: c
+    text: The newer policy automatically cancels every older allowance
+    explanation: Policy order is not a general deny-priority mechanism.
+  correct_option: b
+  explanation: Applicable allow rules contribute to the effective allowed set.
+- id: ats030-section-010-q03
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Distinguish combined peer selectors from alternatives.
+  source_readings:
+  - sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
+  prompt: Namespace and Pod selectors appear together in one peer entry. What does that express?
+  options:
+  - id: a
+    text: Pods matching the Pod selector within namespaces matching the namespace selector
+    explanation: Combined selectors constrain the same peer relationship.
+  - id: b
+    text: Two independent alternatives in separate entries
+    explanation: A combined entry differs from separate alternative peer entries.
+  - id: c
+    text: All Pods in every namespace regardless of labels
+    explanation: The selectors constrain which peers match.
+  correct_option: a
+  explanation: Combined selectors constrain the same peer relationship.
+- id: ats030-section-010-q04
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Identify required traffic under restrictive egress.
+  source_readings:
+  - sections/section-010/module-02/course-01-dns-and-service-discovery.md
+  prompt: Restrictive egress breaks hostname lookup for an otherwise allowed backend. What dependency
+    may be missing?
+  options:
+  - id: a
+    text: A public Ingress rule for every lookup
+    explanation: Cluster name resolution does not universally depend on public Ingress.
+  - id: b
+    text: A StatefulSet ordinal
+    explanation: Stable member naming does not supply missing resolver traffic.
+  - id: c
+    text: Required DNS traffic to the resolver
+    explanation: Discovery can need its own permitted connection path.
+  correct_option: c
+  explanation: Discovery can need its own permitted connection path.
+- id: ats030-section-010-q05
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Diagnose address, listener and policy failures separately.
+  source_readings:
+  - sections/section-010/module-02/course-01-dns-and-service-discovery.md
+  prompt: A hostname resolves, but the selected destination port is denied. What follows?
+  options:
+  - id: a
+    text: The application is necessarily ready
+    explanation: Resolution says nothing universal about useful application health.
+  - id: b
+    text: Resolution success does not establish backend connectivity
+    explanation: Name lookup and the actual connection are different operations.
+  - id: c
+    text: DNS automatically overrides every network policy
+    explanation: Name discovery does not universally bypass traffic controls.
+  correct_option: b
+  explanation: Name lookup and the actual connection are different operations.
