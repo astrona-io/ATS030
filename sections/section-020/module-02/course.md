@@ -5,7 +5,7 @@ exam_objectives:
 ---
 # Troubleshooting A Service Request
 
-This module connects intended application behavior to declared resources and observed conditions.
+A request resolves the Service name but times out before receiving an application response. DNS success narrows the investigation without completing it. Find the next unresolved boundary instead of repeating unrelated discovery checks.
 
 ## Learning Goals
 

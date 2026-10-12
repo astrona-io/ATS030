@@ -9,6 +9,10 @@ You will change the Service selector to a label that no application Pod has. The
 
 Use the module playground and its private kubeconfig. The context check below prevents commands from being directed at an unrelated cluster. The helper retries a command for a bounded interval after controller or policy changes; it cannot turn a persistent failure into success. Read the actual errors when the interval expires.
 
+Changing the selector and changing the target port create different defects. One can remove the intended backend population; the other can preserve endpoints while targeting an absent listener. Read the relevant evidence before correcting each case.
+
+Verify through the original Pod caller after restoring the intended contract. A host request can use a different route or bypass a Pod policy. Discovery, endpoint selection, connection establishment and application behavior remain separate stages even when they form one user-visible symptom.
+
 <!-- astrona:playground:renew -->
 
 For a timed catalog session, renew this module before continuing. Skip renewal for an untimed local author run:

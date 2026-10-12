@@ -5,6 +5,22 @@ exam_objectives:
 ---
 # Tracing A Service Request
 
+A request resolves the Service name but times out before receiving an application response. DNS success narrows the investigation without completing it. Find the next unresolved boundary instead of repeating unrelated discovery checks.
+
+## Learning objectives
+
+- Order observations across a Service request path.
+- Distinguish empty selection, wrong port and source-specific isolation.
+- Explain why verification must use the affected caller.
+
+## Before you start
+
+Use a shell on your own machine with the module playground running. A Pod is Kubernetes's unit for running one or more containers together. The environment provides the `probe` Deployment, which maintains application Pods, and the `starfleet` namespace, which groups these objects.
+
+Read-only commands below use kubectl, the Kubernetes command-line tool. Select the private kubeconfig: the file that identifies this environment's cluster and credentials. The commands do not change the application.
+
+## Tracing A Service Request
+
 The `shuttle` client cannot reach `probe`. A request path includes name resolution, a Service access point, eligible endpoints, network forwarding and the application listener. Troubleshooting should distinguish these stages before changing unrelated workload settings.
 
 If the name does not resolve, inspect the requested Service name, namespace search behavior and DNS reachability. A network policy that blocks DNS can look like a discovery failure. If the name resolves, record what it resolves to and continue testing the connection path conceptually rather than assuming the backend is healthy.
@@ -39,6 +55,43 @@ A refused connection often indicates that the destination can be reached well en
 An HTTP response moves the investigation further into application or intermediary behavior. Identify which component produced the response; a gateway can return an error without the request reaching the application. A successful TCP connection does not prove application authentication or database access works.
 
 After correction, verify through the original caller's namespace, identity and route. A test from another source can bypass the policy or naming rule that caused the problem. The full request path matters because restoring one stage is useful only when the intended operation can traverse the remaining stages too.
+
+## Inspect the mechanism
+
+The path contains name resolution, Service access, backend selection, connection establishment and application processing. Each successful boundary rules out some explanations but leaves later ones open. A successful lookup cannot prove that the Service has ready endpoints; an established connection cannot prove that application authentication succeeds.
+
+Source context matters throughout. The shuttle Pod in starfleet and drifter in outpost can use different name search paths and policy allowances. A test from the host can bypass the restrictions that affected the Pod. Preserve caller namespace, identity and requested operation when collecting evidence and verifying a correction.
+
+```mermaid
+flowchart TB
+    C["Affected caller"] --> D["Name resolution"]
+    D --> S["Service access point"]
+    S --> E["Selected backend"]
+    E --> L["Connection and listener"]
+    L --> R["Application operation"]
+```
+
+End-to-end verification keeps the original caller while following each required boundary.
+
+<!-- astrona:playground:renew -->
+
+Select the private cluster connection and inspect the live state from your host shell:
+
+```sh
+export KUBECONFIG="$(astrona kubeconfig ats-030-playground-020-02)"
+if test "$(kubectl config current-context)" = "kind-astro-ats-030-playground-020-02"; then
+  kubectl -n starfleet get pod shuttle -o wide
+  kubectl -n outpost get pod drifter -o wide
+  kubectl -n starfleet get service probe -o yaml
+  kubectl -n starfleet get endpointslices -l kubernetes.io/service-name=probe -o yaml
+else
+  printf "Select this module's private kubeconfig before continuing.\n" >&2
+fi
+```
+
+Compare the two caller contexts with the Service's selector and endpoint population. These queries do not originate a connection from either Pod, so their success cannot stand in for caller-side reachability. Use them to identify the intended namespace, mapping and backend before a bounded request test. Avoid interpreting a host-side success as proof that both Pod callers are allowed.
+
+You can now identify where a request observation stops and choose a focused next check. Verification repeats the operation through the corrected path rather than substituting an easier caller or endpoint.
 
 ## Common pitfalls
 
