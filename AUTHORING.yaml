@@ -1,0 +1,168 @@
+version: 1
+approval: CKAD playgrounds and guided practice requested 2026-10-12; no new graded
+  labs. Maintainer authorized graded labs after material expansion on 2026-10-12.
+course:
+  id: ATS030
+  certification:
+    name: Certified Kubernetes Application Developer
+    code: CKAD
+    provider: CNCF / Linux Foundation
+    domain: Services and Networking
+    weight: 20
+    competencies:
+    - Demonstrate basic understanding of NetworkPolicies
+    - Provide and troubleshoot access to applications via services
+    - Use Ingress rules to expose applications
+defaults:
+  playground: true
+  module_lab: false
+  capstone: false
+  section_quiz: true
+  final_quiz: true
+assessment_format: YAML question banks, schema version 1; indexed in assessments/index.yaml
+sections:
+- id: section-010
+  title: Demonstrate basic understanding of NetworkPolicies
+  curriculum_item: Demonstrate basic understanding of NetworkPolicies
+  capstone: false
+  section_quiz: true
+  modules:
+  - id: module-01
+    title: NetworkPolicy Selection And Allowed Connections
+    objectives:
+    - Explain policy selection and directional isolation.
+    - Evaluate additive ingress and egress allowances.
+    - Distinguish combined peer selectors from alternatives.
+    - Identify enforcement and permitted dependency requirements.
+    outline:
+    - NetworkPolicy And Allowed Connections
+    - Traffic Isolation And Allowed Peers
+    - Enforce Ingress Isolation And One Allowed Peer
+    playground: true
+    module_lab: false
+    sources:
+    - reading: sections/section-010/module-01/course-01-networkpolicy-and-allowed-connections.md
+      adapted_from: ATS038/sections/section-010/module-03/course-01-networkpolicy-and-allowed-connections.md
+    - reading: sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
+      adapted_from: ATS043/sections/section-080/module-01/course-01-traffic-isolation-and-allowed-peers.md
+    - reading: sections/section-010/module-01/course-03-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-010/module-01/course-03-guided-practice.md
+  - id: module-02
+    title: Dependency-Aware Network Isolation
+    objectives:
+    - Explain DNS lookup and Service discovery dependencies.
+    - Distinguish name resolution from backend connectivity.
+    - Identify required traffic under restrictive egress.
+    - Diagnose address, listener and policy failures separately.
+    outline:
+    - DNS And Service Discovery
+    - Allow DNS And The Application As Separate Dependencies
+    playground: true
+    module_lab: false
+    sources:
+    - reading: sections/section-010/module-02/course-01-dns-and-service-discovery.md
+      adapted_from: ATS038/sections/section-010/module-01/course-02-dns-and-service-discovery.md
+    - reading: sections/section-010/module-02/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-010/module-02/course-02-guided-practice.md
+- id: section-020
+  title: Provide and troubleshoot access to applications via services
+  curriculum_item: Provide and troubleshoot access to applications via services
+  capstone: false
+  section_quiz: true
+  modules:
+  - id: module-01
+    title: Services, Ports And Ready Backends
+    objectives:
+    - Explain Service selection and EndpointSlice relationships.
+    - Distinguish Service port, target port and application listener.
+    - Choose access behavior for supported Service types.
+    - Evaluate Pod addressing and backend readiness.
+    outline:
+    - Selectors, Ports And Backends
+    - Pod Addresses And Network Implementation
+    - Repair A Service Target Port
+    playground: true
+    module_lab: false
+    sources:
+    - reading: sections/section-020/module-01/course-01-selectors-ports-and-backends.md
+      adapted_from: ATS038/sections/section-010/module-02/course-01-selectors-ports-and-backends.md
+    - reading: sections/section-020/module-01/course-02-pod-addresses-and-network-implementation.md
+      adapted_from: ATS038/sections/section-010/module-01/course-01-pod-addresses-and-network-implementation.md
+    - reading: sections/section-020/module-01/course-03-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-020/module-01/course-03-guided-practice.md
+  - id: module-02
+    title: Troubleshooting A Service Request
+    objectives:
+    - Trace a client request through discovery and Service routing.
+    - Distinguish selector, readiness and port failures.
+    - Evaluate policy and dependency effects on reachability.
+    - Choose a correction supported by the first failed relationship.
+    outline:
+    - Tracing A Service Request
+    - Trace A Missing Backend To Its Selector
+    playground: true
+    module_lab: true
+    sources:
+    - reading: sections/section-020/module-02/course-01-tracing-a-service-request.md
+      adapted_from: ATS038/sections/section-030/module-02/course-02-tracing-a-service-request.md
+    - reading: sections/section-020/module-02/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-020/module-02/course-02-guided-practice.md
+    labs:
+    - id: lab-01
+      path: sections/section-020/module-02/labs/lab-01
+      objective: Restore the existing client request by correcting the Service backend
+        mapping.
+      status: draft
+      runtime_verification: pending
+- id: section-030
+  title: Use Ingress rules to expose applications
+  curriculum_item: Use Ingress rules to expose applications
+  capstone: false
+  section_quiz: true
+  modules:
+  - id: module-01
+    title: Ingress Routing And TLS Contracts
+    objectives:
+    - Identify IngressClass and controller responsibility.
+    - Compare exact, prefix and implementation-specific paths.
+    - Trace host and Service port matching.
+    - Explain TLS termination and backend protocol limits.
+    outline:
+    - Matching Ingress Hosts, Paths And Service Backends
+    - Route A Host And Path Through An Ingress Controller
+    playground: true
+    module_lab: false
+    sources:
+    - reading: sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+      adapted_from: null
+    - reading: sections/section-030/module-01/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-030/module-01/course-02-guided-practice.md
+  - id: module-02
+    title: External Request Diagnosis
+    objectives:
+    - Distinguish lookup, transport, routing and application errors.
+    - Identify whether the controller or backend produced a response.
+    - Evaluate endpoint readiness, ports and applicable traffic policy.
+    - Verify the intended host, path and secure application response.
+    outline:
+    - Tracing An External Request To The Application
+    - Locate A Broken Ingress Backend Reference
+    playground: true
+    module_lab: false
+    sources:
+    - reading: sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+      adapted_from: null
+    - reading: sections/section-030/module-02/course-02-guided-practice.md
+      adapted_from: null
+    practice_readings:
+    - sections/section-030/module-02/course-02-guided-practice.md
