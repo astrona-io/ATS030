@@ -34,7 +34,7 @@ modules:
   title: Demonstrate basic understanding of NetworkPolicies
   description: Developed explanations and application reasoning for Demonstrate basic
     understanding of NetworkPolicies.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Demonstrate basic understanding of NetworkPolicies
@@ -107,7 +107,7 @@ modules:
   title: Provide and troubleshoot access to applications via services
   description: Developed explanations and application reasoning for Provide and troubleshoot
     access to applications via services.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Provide and troubleshoot access to applications via services
@@ -182,7 +182,7 @@ modules:
   title: Use Ingress rules to expose applications
   description: Developed explanations and application reasoning for Use Ingress rules
     to expose applications.
-  status: alpha
+  maturity: alpha
   content:
   - type: reading
     title: Use Ingress rules to expose applications
