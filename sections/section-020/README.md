@@ -5,9 +5,9 @@ exam_objectives:
 ---
 # Provide and troubleshoot access to applications via services
 
-This section covers provide and troubleshoot access to applications via services. You will study Services, Ports And Ready Backends, Troubleshooting A Service Request. The lessons explain the responsible components, configuration relationships and failure cases relevant to application development.
+This section covers provide and troubleshoot access to applications via services. You will study Services, Ports And Ready Backends, Troubleshooting A Service Request, Service Types, Headless Services And Service DNS. The lessons explain the responsible components, configuration relationships and failure cases relevant to application development.
 
-Each module begins with its goals and ends with a summary. Reusable YAML knowledge checks follow the section summary and are registered separately for future presentation.
+Each module begins with its goals and ends with a summary. An advanced capstone lab and a section quiz close the section.
 
 
 You will connect a stable access point to selected, ready backends and their actual listeners. Service ports, target ports and Pod addresses are distinct facts. Troubleshooting keeps the affected caller while following discovery, forwarding and response behavior.
@@ -22,5 +22,7 @@ You will connect a stable access point to selected, ready backends and their act
 - Distinguish selector, readiness and port failures.
 - Evaluate policy and dependency effects on reachability.
 - Choose a correction supported by the first failed relationship.
+- Create ClusterIP, NodePort, LoadBalancer, headless and ExternalName Services.
+- Write the DNS name of a Service in the same and in another namespace.
 
-Each module pairs its concept readings with a guided practical sequence in an isolated playground. Finish the practice and closing summary before moving on. The YAML knowledge checks remain separate from the environment lifecycle.
+Each module pairs its concept readings with a guided practical sequence in an isolated playground. Finish the practice and closing summary before moving on.

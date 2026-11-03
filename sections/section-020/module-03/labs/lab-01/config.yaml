@@ -1,0 +1,48 @@
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-030-lab-020-03-01
+  docs:
+    prerequisites: docs/prerequisites.md
+    question: question.md
+    solution: solution.md
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.0@sha256:452d707d4862f52530247495d180205e029056831160e22870e37e3f6c1ac31f
+    preloadImages:
+    - docker.io/library/python:3.13-alpine
+    - docker.io/library/busybox:1.37.0
+bootstrap:
+  init:
+  - name: seed-lab
+    type: file
+    source: bootstrap/setup.sh
+testing:
+  init:
+  - name: reference-result
+    type: file
+    source: solution/apply.sh
+validation:
+  scripts:
+  - name: validate-nodeport
+    description: Service probe-node in starfleet is a NodePort Service on node port 30081
+    type: file
+    source: validation/validate-nodeport.sh
+    hint: Create probe-node with type NodePort, selector app=probe, port 80, targetPort http and nodePort 30081.
+  - name: validate-headless
+    description: Service probe-pods in starfleet is headless and selects the probe pods
+    type: file
+    source: validation/validate-headless.sh
+    hint: Set clusterIP None and the selector app=probe. A headless Service has no cluster IP.
+  - name: validate-externalname
+    description: Service probe-alias in outpost is an ExternalName Service for probe.starfleet.svc.cluster.local
+    type: file
+    source: validation/validate-externalname.sh
+    hint: Create probe-alias in the namespace outpost with type ExternalName and the full DNS name of the probe Service.
+  - name: validate-behavior
+    description: DNS and requests behave as designed
+    type: file
+    source: validation/validate-behavior.sh
+    hint: drifter must reach probe-alias by short name and probe-pods must resolve to both pod addresses.
+teardown:
+  keepCluster: false

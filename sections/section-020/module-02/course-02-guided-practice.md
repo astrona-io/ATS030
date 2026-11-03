@@ -69,6 +69,25 @@ wait_for_success kubectl -n starfleet exec shuttle -- wget -T 3 -qO- http://prob
 
 The repair belongs to Service intent. Deleting healthy Pods would preserve the bad selector and repeat the same mismatch.
 
+A second defect leaves the selector intact and breaks the port mapping. Change `targetPort` to a number where no process listens, then compare the endpoints with the request result. The EndpointSlice still lists two ready endpoints, because readiness checks the container and not the Service. The request fails with a refusal or a timeout from the wrong port, not with an empty backend set.
+
+```sh
+kubectl -n starfleet patch service probe --type=json -p '[{"op":"replace","path":"/spec/ports/0/targetPort","value":9090}]'
+kubectl -n starfleet get endpointslice -l kubernetes.io/service-name=probe -o yaml
+kubectl -n starfleet exec shuttle -- wget -T 2 -qO- http://probe/
+```
+
+The first command changes only the target port. The second shows two endpoints that now carry the port 9090. The third fails, because the pods listen on 8080 under the port name `http`.
+
+Restore the named target port and confirm the request works again. A named port follows the container definition, so it keeps working if the container port number changes later.
+
+```sh
+kubectl -n starfleet patch service probe --type=json -p '[{"op":"replace","path":"/spec/ports/0/targetPort","value":"http"}]'
+wait_for_success kubectl -n starfleet exec shuttle -- wget -T 3 -qO- http://probe/
+```
+
+The comparison gives a rule for diagnosis. An empty EndpointSlice points to the selector or to readiness. Ready endpoints with a failing request point to the target port, a policy or the application.
+
 Use a fresh request together with API evidence. DNS can resolve a Service whose endpoints are unusable, and a healthy Pod can remain outside the selected population. The selected Service reference, namespace and labels should be explicit throughout diagnosis.
 
 ## Common pitfalls

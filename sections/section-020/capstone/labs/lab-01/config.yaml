@@ -1,0 +1,53 @@
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-030-capstone-020
+  docs:
+    prerequisites: docs/prerequisites.md
+    question: question.md
+    solution: solution.md
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.0@sha256:452d707d4862f52530247495d180205e029056831160e22870e37e3f6c1ac31f
+    preloadImages:
+    - docker.io/library/python:3.13-alpine
+    - docker.io/library/busybox:1.37.0
+bootstrap:
+  init:
+  - name: seed-lab
+    type: file
+    source: bootstrap/setup.sh
+testing:
+  init:
+  - name: reference-result
+    type: file
+    source: solution/apply.sh
+validation:
+  scripts:
+  - name: validate-probe-service
+    description: Service probe in starfleet selects the ready probe pods and targets the container port
+    type: file
+    source: validation/validate-probe-service.sh
+    hint: The selector must be app=probe and release=probe, and the targetPort must be http (container port 8080). Check the EndpointSlice.
+  - name: validate-nodeport
+    description: Service probe-node is a NodePort Service on 30090
+    type: file
+    source: validation/validate-nodeport.sh
+    hint: Create probe-node with type NodePort, selector app=probe, port 80, targetPort http and nodePort 30090.
+  - name: validate-headless
+    description: Service probe-pods is headless
+    type: file
+    source: validation/validate-headless.sh
+    hint: Set clusterIP None and the selector app=probe.
+  - name: validate-externalname
+    description: Service probe in outpost is an ExternalName Service
+    type: file
+    source: validation/validate-externalname.sh
+    hint: Create the Service probe in the namespace outpost with type ExternalName and the target probe.starfleet.svc.cluster.local.
+  - name: validate-behavior
+    description: Requests and DNS behave as designed
+    type: file
+    source: validation/validate-behavior.sh
+    hint: Both clients must receive version=v1 from http://probe/ and probe-pods must resolve to every pod address.
+teardown:
+  keepCluster: false

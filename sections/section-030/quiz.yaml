@@ -1,0 +1,252 @@
+# Knowledge check for section 030. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats030-030
+course_id: ATS030
+exam_code: CKAD
+status: draft
+provenance: Original practice material written for this course; not official exam
+  questions.
+scope:
+  type: section
+  id: section-030
+  title: Use Ingress rules to expose applications
+questions:
+- id: ats030-030-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Explain the role of the Ingress controller
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: An Ingress is accepted by the API server, but no Ingress controller handles
+    its class. What is the result?
+  options:
+  - id: a
+    text: The API server routes the traffic.
+    explanation: The API server stores objects and does not route traffic.
+  - id: b
+    text: The Ingress has no effect on traffic, because the resource is only a declaration
+      that a controller must implement.
+    explanation: Correct. Without a controller no route is active.
+  - id: c
+    text: The Service type changes to `LoadBalancer`.
+    explanation: Ingress never changes a Service.
+  - id: d
+    text: Kubernetes picks any other controller at random.
+    explanation: A controller handles only its own class.
+  correct_option: b
+  explanation: An Ingress needs a controller whose class matches.
+- id: ats030-030-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Match a Prefix path
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: 'An Ingress rule has `path: /reports` and `pathType: Prefix`. Which request
+    path matches?'
+  options:
+  - id: a
+    text: "`/reports-old`"
+    explanation: Prefix matching works on whole path elements.
+  - id: b
+    text: "`/Reports`"
+    explanation: Paths are case sensitive.
+  - id: c
+    text: "`/report`"
+    explanation: This path is shorter.
+  - id: d
+    text: "`/reports/daily`"
+    explanation: Correct. The path elements `reports` and `daily` start with the element
+      `reports`.
+  correct_option: d
+  explanation: Prefix matches by path elements split at `/`.
+- id: ats030-030-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Match an Exact path
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: 'A rule has `path: /status` and `pathType: Exact`. Which request matches?'
+  options:
+  - id: a
+    text: "`/status`"
+    explanation: Correct. Exact needs the same path.
+  - id: b
+    text: "`/status/`"
+    explanation: The trailing slash makes a different path.
+  - id: c
+    text: "`/status/live`"
+    explanation: A longer path does not match Exact.
+  - id: d
+    text: "`/Status`"
+    explanation: Paths are case sensitive.
+  correct_option: a
+  explanation: Exact matches the path as written and nothing else.
+- id: ats030-030-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Name the Service port a backend uses
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: 'A Service has `port: 80` and `targetPort: 8080`. Which backend is correct
+    in the Ingress?'
+  options:
+  - id: a
+    text: "`service.name: probe` with `port.number: 8080`"
+    explanation: The Ingress refers to the Service port.
+  - id: b
+    text: "`service.name: probe` with `port.number: 80`"
+    explanation: Correct. The controller finds the pods through the Service port,
+      then uses the target port.
+  - id: c
+    text: "`service.name: probe` with `port.number: 30080`"
+    explanation: The node port is not used in an Ingress.
+  - id: d
+    text: "`pod.name: probe-0` with `port.number: 8080`"
+    explanation: An Ingress backend is a Service or a resource, not a pod name.
+  correct_option: b
+  explanation: Use the Service port number or its name.
+- id: ats030-030-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Choose between two overlapping paths
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: One host has the rules `/` Prefix to `probe` and `/docs` Prefix to `docs`.
+    Which backend receives `/docs/guide`?
+  options:
+  - id: a
+    text: "`probe`, because it is listed first."
+    explanation: Order does not decide.
+  - id: b
+    text: "`docs`, because the longest matching path wins."
+    explanation: Correct. This is the rule of the Ingress specification.
+  - id: c
+    text: Both, as a copy.
+    explanation: One backend receives a request.
+  - id: d
+    text: Neither, because the paths overlap.
+    explanation: Overlap is valid.
+  correct_option: b
+  explanation: When several paths match, the longest path wins.
+- id: ats030-030-q06
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain host matching
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: 'An Ingress has one rule for `host: portal.local`. A client sends the request
+    to the controller with `Host: other.local`. What does the controller usually return?'
+  options:
+  - id: a
+    text: The page of `portal.local`.
+    explanation: The host does not match.
+  - id: b
+    text: "`404 Not Found`, because no rule matches."
+    explanation: Correct. This is what the lab controller returns for an unmatched
+      host.
+  - id: c
+    text: "`301 Moved Permanently`."
+    explanation: A redirect is not configured.
+  - id: d
+    text: The request is delivered to a random pod.
+    explanation: The controller only uses matching rules.
+  correct_option: b
+  explanation: A request that matches no rule gets the default answer of the controller,
+    usually 404.
+- id: ats030-030-q07
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Provide a TLS Secret
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: Which Secret works in `spec.tls[].secretName`?
+  options:
+  - id: a
+    text: A Secret of type `kubernetes.io/tls` with the keys `tls.crt` and `tls.key`
+      in the namespace of the Ingress.
+    explanation: Correct. The controller reads the certificate and key from it.
+  - id: b
+    text: Any Opaque Secret in another namespace.
+    explanation: The Secret must be in the namespace of the Ingress.
+  - id: c
+    text: A ConfigMap with the certificate.
+    explanation: TLS uses a Secret.
+  - id: d
+    text: A Secret that holds only the private key.
+    explanation: The certificate chain is also required.
+  correct_option: a
+  explanation: A TLS Secret holds the certificate and the key and lives in the namespace
+    of the Ingress.
+- id: ats030-030-q08
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Explain TLS termination
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: A TLS Ingress is configured for `portal.local`. Which statement describes
+    the traffic path?
+  options:
+  - id: a
+    text: The client opens an HTTPS connection to the controller. The controller ends
+      TLS and by default sends plain HTTP to the Service.
+    explanation: Correct. TLS terminates at the controller.
+  - id: b
+    text: The client opens HTTPS to the pod directly, and the controller only forwards
+      names.
+    explanation: The controller terminates TLS and sends the request on.
+  - id: c
+    text: The API server decrypts the traffic.
+    explanation: The API server is not in the data path.
+  - id: d
+    text: The Service decrypts the traffic with its cluster IP.
+    explanation: A Service forwards connections and does not decrypt them.
+  correct_option: a
+  explanation: The controller terminates TLS for the hosts in the `tls` block.
+- id: ats030-030-q09
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Locate a broken backend reference
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: 'A client gets an error from a route. `kubectl describe ingress` shows a
+    backend with `<error: services "missing-service" not found>`. What is the fix?'
+  options:
+  - id: a
+    text: Restart the controller.
+    explanation: The reference is wrong, not the controller.
+  - id: b
+    text: Delete the IngressClass.
+    explanation: The class is not the cause.
+  - id: c
+    text: Edit the Ingress so that the backend names an existing Service and port.
+    explanation: Correct. The Ingress names a Service that does not exist.
+  - id: d
+    text: Add a `nodePort` to the pods.
+    explanation: Pods have no node port.
+  correct_option: c
+  explanation: The API server does not check that a backend Service exists. Read `kubectl
+    describe ingress` for the error.
+- id: ats030-030-q10
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Reject a mismatched certificate name
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: A client trusts the certificate issued for `portal.local` and connects with
+    the server name `wrong.local`. What happens?
+  options:
+  - id: a
+    text: The connection works, because the certificate is trusted.
+    explanation: Trust and name matching are separate checks.
+  - id: b
+    text: The client rejects the certificate, because the name is not in the certificate.
+    explanation: Correct. The server name must match a name in the certificate.
+  - id: c
+    text: The controller changes the certificate for the name.
+    explanation: The controller does not issue certificates here.
+  - id: d
+    text: The Ingress rule is deleted.
+    explanation: The client does not change the cluster.
+  correct_option: b
+  explanation: A client checks both trust and the server name.

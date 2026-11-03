@@ -1,8 +1,8 @@
+---
 training:
   id: ATS030
   title: 'CKAD: Services and Networking'
-  description: Detailed CKAD teaching with module playgrounds, guided hands-on practice
-    and reusable YAML knowledge checks. Technical content remains draft for review.
+  description: Detailed CKAD teaching with module playgrounds, guided hands-on practice and reusable YAML knowledge checks. Technical content remains draft for review.
   certification:
     name: Certified Kubernetes Application Developer
     code: CKAD
@@ -32,9 +32,8 @@ modules:
     path: sections/intro/course-03-how-this-course-is-made.md
 - id: module-010
   title: Demonstrate basic understanding of NetworkPolicies
-  description: Developed explanations and application reasoning for Demonstrate basic
-    understanding of NetworkPolicies.
-  maturity: alpha
+  description: Developed explanations and application reasoning for Demonstrate basic understanding of NetworkPolicies.
+  status: alpha
   content:
   - type: reading
     title: Demonstrate basic understanding of NetworkPolicies
@@ -89,8 +88,7 @@ modules:
     topic: networkpolicy-egress
     task_kind: build
     learning_goals:
-    - Allow name resolution and application access while denying a healthy unrelated
-      listener.
+    - Allow name resolution and application access while denying a healthy unrelated listener.
     tags:
     - ckad
     - networkpolicy-egress
@@ -103,11 +101,67 @@ modules:
   - type: reading
     title: Summary
     path: sections/section-010/module-02/course-03-summary.md
+  - type: reading
+    title: Default Deny, Peer Selectors And IP Blocks
+    path: sections/section-010/module-03/course.md
+  - type: reading
+    title: Default Deny And Additive Policies
+    path: sections/section-010/module-03/course-01-default-deny-and-additive-policies.md
+  - type: reading
+    title: Peer Selectors, IP Blocks And Ports
+    path: sections/section-010/module-03/course-02-peer-selectors-ip-blocks-and-ports.md
+  - type: reading
+    title: Default Deny With One Cross-Namespace Allow - Task
+    path: sections/section-010/module-03/labs/lab-01/question.md
+  - type: lab
+    title: Default Deny With One Cross-Namespace Allow
+    path: sections/section-010/module-03/labs/lab-01
+    difficulty: intermediate
+    estimated_duration: 25m
+    topic: networkpolicy-default-deny
+    task_kind: build
+    learning_goals:
+    - Close a namespace for ingress and allow exactly one client of another namespace with a combined selector.
+    tags:
+    - ckad
+    - networkpolicy
+    - default-deny
+    resources:
+    - name: Network Policies
+      url: https://kubernetes.io/docs/concepts/services-networking/network-policies/
+  - type: reading
+    title: Default Deny With One Cross-Namespace Allow - Solution
+    path: sections/section-010/module-03/labs/lab-01/solution.md
+  - type: reading
+    title: Summary
+    path: sections/section-010/module-03/course-03-summary.md
+  - type: reading
+    title: Isolate A Namespace In Both Directions - Task
+    path: sections/section-010/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Demonstrate Basic Understanding Of NetworkPolicies Capstone
+    path: sections/section-010/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 35m
+    topic: networkpolicy
+    task_kind: build
+    learning_goals:
+    - Remove a permissive policy, apply default deny in both directions and open only the connections the application needs.
+    tags:
+    - ckad
+    - networkpolicy
+    - capstone
+    resources:
+    - name: Network Policies
+      url: https://kubernetes.io/docs/concepts/services-networking/network-policies/
+  - type: quiz
+    title: 'Knowledge Check: Demonstrate Basic Understanding Of NetworkPolicies'
+    path: sections/section-010/quiz.yaml
+    pass_score: 70
 - id: module-020
   title: Provide and troubleshoot access to applications via services
-  description: Developed explanations and application reasoning for Provide and troubleshoot
-    access to applications via services.
-  maturity: alpha
+  description: Developed explanations and application reasoning for Provide and troubleshoot access to applications via services.
+  status: alpha
   content:
   - type: reading
     title: Provide and troubleshoot access to applications via services
@@ -129,8 +183,7 @@ modules:
     topic: service-selector
     task_kind: troubleshooting
     learning_goals:
-    - Restore backend selection while preserving the existing client and listener
-      ports.
+    - Restore backend selection while preserving the existing client and listener ports.
     tags:
     - ckad
     - service-selector
@@ -158,7 +211,7 @@ modules:
   - type: lab
     title: Repair A Service Target Port
     path: sections/section-020/module-02/labs/lab-01
-    difficulty: beginner
+    difficulty: intermediate
     estimated_duration: 15m
     topic: services
     task_kind: troubleshooting
@@ -178,11 +231,72 @@ modules:
   - type: reading
     title: Summary
     path: sections/section-020/module-02/course-03-summary.md
+  - type: reading
+    title: Service Types, Headless Services And Service DNS
+    path: sections/section-020/module-03/course.md
+  - type: reading
+    title: 'Service Types: ClusterIP, NodePort And LoadBalancer'
+    path: sections/section-020/module-03/course-01-service-types-clusterip-nodeport-loadbalancer.md
+  - type: reading
+    title: Headless Services, ExternalName And Service DNS
+    path: sections/section-020/module-03/course-02-headless-services-externalname-and-service-dns.md
+  - type: reading
+    title: Create Three Service Types For One Application - Task
+    path: sections/section-020/module-03/labs/lab-01/question.md
+  - type: lab
+    title: Create Three Service Types For One Application
+    path: sections/section-020/module-03/labs/lab-01
+    difficulty: intermediate
+    estimated_duration: 25m
+    topic: service-types
+    task_kind: build
+    learning_goals:
+    - Create a NodePort, a headless and an ExternalName Service and verify DNS and requests.
+    tags:
+    - ckad
+    - service
+    - nodeport
+    - headless
+    - externalname
+    resources:
+    - name: Service
+      url: https://kubernetes.io/docs/concepts/services-networking/service/
+    - name: DNS for Services and Pods
+      url: https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/
+  - type: reading
+    title: Create Three Service Types For One Application - Solution
+    path: sections/section-020/module-03/labs/lab-01/solution.md
+  - type: reading
+    title: Summary
+    path: sections/section-020/module-03/course-03-summary.md
+  - type: reading
+    title: Repair And Expose An Application With Services - Task
+    path: sections/section-020/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Provide And Troubleshoot Access To Applications Via Services Capstone
+    path: sections/section-020/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 35m
+    topic: services
+    task_kind: troubleshooting
+    learning_goals:
+    - Repair a Service with a wrong selector and target port, then add NodePort, headless and ExternalName Services.
+    tags:
+    - ckad
+    - service
+    - troubleshooting
+    - capstone
+    resources:
+    - name: Service
+      url: https://kubernetes.io/docs/concepts/services-networking/service/
+  - type: quiz
+    title: 'Knowledge Check: Provide And Troubleshoot Access To Applications Via Services'
+    path: sections/section-020/quiz.yaml
+    pass_score: 70
 - id: module-030
   title: Use Ingress rules to expose applications
-  description: Developed explanations and application reasoning for Use Ingress rules
-    to expose applications.
-  maturity: alpha
+  description: Developed explanations and application reasoning for Use Ingress rules to expose applications.
+  status: alpha
   content:
   - type: reading
     title: Use Ingress rules to expose applications
@@ -234,8 +348,7 @@ modules:
     topic: ingress-backend
     task_kind: troubleshooting
     learning_goals:
-    - Trace a failed external route to a nonexistent backend reference and repair
-      it.
+    - Trace a failed external route to a nonexistent backend reference and repair it.
     tags:
     - ckad
     - ingress-backend
@@ -253,8 +366,7 @@ modules:
     topic: ingress-tls
     task_kind: build
     learning_goals:
-    - Route HTTPS through the controller and verify both matching and mismatched certificate
-      identities.
+    - Route HTTPS through the controller and verify both matching and mismatched certificate identities.
     tags:
     - ckad
     - ingress-tls
@@ -267,3 +379,31 @@ modules:
   - type: reading
     title: Summary
     path: sections/section-030/module-02/course-03-summary.md
+  - type: reading
+    title: Publish Two Services Through One TLS Ingress - Task
+    path: sections/section-030/capstone/labs/lab-01/question.md
+  - type: lab
+    title: Use Ingress Rules To Expose Applications Capstone
+    path: sections/section-030/capstone/labs/lab-01
+    difficulty: advanced
+    estimated_duration: 35m
+    topic: ingress
+    task_kind: build
+    learning_goals:
+    - Route two paths of one host to two Services and terminate TLS with a supplied Secret.
+    tags:
+    - ckad
+    - ingress
+    - tls
+    - capstone
+    resources:
+    - name: Ingress
+      url: https://kubernetes.io/docs/concepts/services-networking/ingress/
+  - type: quiz
+    title: 'Knowledge Check: Use Ingress Rules To Expose Applications'
+    path: sections/section-030/quiz.yaml
+    pass_score: 70
+  - type: quiz
+    title: 'Final Knowledge Check: Services and Networking'
+    path: sections/final-domain-quiz.yaml
+    pass_score: 70

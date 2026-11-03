@@ -1,0 +1,49 @@
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-030-capstone-030
+  docs:
+    prerequisites: docs/prerequisites.md
+    question: question.md
+    solution: solution.md
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.0@sha256:452d707d4862f52530247495d180205e029056831160e22870e37e3f6c1ac31f
+    preloadImages:
+    - docker.io/library/python:3.13-alpine
+    - docker.io/library/busybox:1.37.0
+    - docker.io/library/traefik:v3.6.1
+bootstrap:
+  init:
+  - name: seed-lab
+    type: file
+    source: bootstrap/setup.sh
+testing:
+  init:
+  - name: reference-result
+    type: file
+    source: solution/apply.sh
+validation:
+  scripts:
+  - name: validate-ingress-spec
+    description: Ingress portal has the class, host, two Prefix paths and the TLS Secret
+    type: file
+    source: validation/validate-ingress-spec.sh
+    hint: Use ingressClassName traefik, host portal.local, path / to probe, path /docs to docs, and tls with secretName portal-tls. Add the two Traefik annotations for the websecure entrypoint and TLS.
+  - name: validate-routing
+    description: HTTPS routes each path to its Service and rejects a wrong server name
+    type: file
+    source: validation/validate-routing.sh
+    hint: A request for / must receive version=v1, a request for /docs/guide must receive version=v2, and a client must reject the server name wrong.local.
+  - name: validate-unmatched-host
+    description: An unmatched host returns 404
+    type: file
+    source: validation/validate-unmatched-host.sh
+    hint: Only the host portal.local may have a rule. Do not add a rule without a host.
+  - name: validate-backends-preserved
+    description: The Services probe and docs and their Deployments are unchanged
+    type: file
+    source: validation/validate-backends-preserved.sh
+    hint: Change only the Ingress. Do not edit the Services or the Deployments.
+teardown:
+  keepCluster: false

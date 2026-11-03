@@ -205,7 +205,7 @@ The official objectives are listed in `astrona.yaml` and mapped in `CURRICULUM.m
 
 ### Playground and guided-practice scope
 
-On 2026-10-12 the maintainer requested CKAD playgrounds and hands-on teaching. This supersedes the earlier no-playgrounds instruction for CKAD. Add one ungraded environment per module and weave concrete practice into the reading order. Keep the existing YAML knowledge checks. No new graded labs or submission workflow are added in this scope.
+On 2026-10-12 the maintainer requested CKAD playgrounds and hands-on teaching. This supersedes the earlier no-playgrounds instruction for CKAD. Add one ungraded environment per module and weave concrete practice into the reading order. Keep the existing YAML knowledge checks. The 2026-10-13 maintainer request extends this scope to graded labs in every active module. Keep independent environments, task and solution readings, guarded scripts and behavior graders. Register each exercise immediately after the reading it practises.
 
 Playgrounds use the Astrona configuration contract, isolated kubeconfigs and bounded bootstrap waits. Do not write to unrelated clusters. Landing pages carry the playground launch marker, every practical reading renews it before the first step, and the final summary ends with the destroy marker. The shared writing and lifecycle guidance above applies to these environments.
 
@@ -224,15 +224,12 @@ self-contained-page and Mermaid rules apply throughout.
 
 ### Reusable question data
 
-Write original single-choice questions as YAML banks under section folders and
-`assessments/`. Use the versioned contract in `schemas/question-bank.schema.json`
+Write original single-choice questions as one `quiz.yaml` per section (`sections/section-0N0/quiz.yaml`, status draft, listed in `astrona.yaml` as `type: quiz` with `pass_score: 70` after the capstone) and one `sections/final-domain-quiz.yaml`. Use the versioned contract in `schemas/question-bank.schema.json`
 and teaching order in `assessments/index.yaml`. Each bank has 5–15 questions with
 stable IDs, one correct option, per-option feedback, a measurable learning
 objective and source reading paths for author traceability.
 
-Do not register YAML as a Markdown reading. A future renderer consumes the bank
-index and presents the checkpoint after its declared reading, preserving bank
-order when several share an anchor. Do not expose answer keys before submission
+Do not expose answer keys before submission
 in a production quiz interface. These public banks are practice material, not
 secure or official exam questions.
 
@@ -251,3 +248,7 @@ contracts. Record actual runtime evidence when available. Static validation is n
 ### First graded lab scope — 2026-10-12
 
 The maintainer subsequently authorized starting graded labs after the CKAD, CKA and CKS reading expansions. This overrides the earlier no-new-graded-labs restriction for the independently scoped first lab in section-020/module-02/labs/lab-01. Preserve the module playground and existing question banks. The lab uses its own cluster and context, seeds only the intentional starting fault, and validates both required fields and the original client request. Its task, solution and launch README remain draft. Record static and runtime evidence separately.
+
+### Capstones and module labs
+
+Every section has one capstone lab at `sections/section-0N0/capstone/labs/lab-01`, registered with `difficulty: advanced`. Module labs use `difficulty: intermediate`. Every playground and lab is built untested: use static checks only (`astrona validate -c`, `bash -n`, `ruby -ryaml`) and mark each README UNTESTED until real runtime evidence exists. Module 010/03 and 020/03 and the three capstones were added on 2026-11-03.

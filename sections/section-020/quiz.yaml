@@ -1,0 +1,286 @@
+# Knowledge check for section 020. Listed in astrona.yaml as a `type: quiz` entry after the capstone lab.
+schema_version: 1
+kind: question_bank
+id: ats030-020
+course_id: ATS030
+exam_code: CKAD
+status: draft
+provenance: Original practice material written for this course; not official exam
+  questions.
+scope:
+  type: section
+  id: section-020
+  title: Provide and troubleshoot access to applications via services
+questions:
+- id: ats030-020-q01
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Explain how a Service finds its backends
+  source_readings:
+  - sections/section-020/module-01/course-01-selectors-ports-and-backends.md
+  prompt: 'A Service has the selector `app: probe, release: probe-v2`. The pods of
+    the Deployment carry `app: probe, release: probe`. What does `kubectl get endpointslices
+    -l kubernetes.io/service-name=probe` show?'
+  options:
+  - id: a
+    text: An EndpointSlice with no endpoints, because no pod matches every label of
+      the selector.
+    explanation: Correct. A pod must carry all labels of the selector.
+  - id: b
+    text: Both pods, because one matching label is enough.
+    explanation: All selector labels must match.
+  - id: c
+    text: An error, because the selector does not match any pod.
+    explanation: A Service with a selector that matches nothing is valid. It has no
+      endpoints.
+  - id: d
+    text: 'The pods with the label `release: probe-v2` from other namespaces.'
+    explanation: A Service selects pods only in its own namespace.
+  correct_option: a
+  explanation: The selector is an AND of all its labels. A Service whose selector
+    matches no pod has an empty EndpointSlice.
+- id: ats030-020-q02
+  type: single_choice
+  difficulty: beginner
+  learning_objective: Distinguish port, targetPort and nodePort
+  source_readings:
+  - sections/section-020/module-01/course-01-selectors-ports-and-backends.md
+  prompt: 'A Service has `port: 80`, `targetPort: 8080` and `nodePort: 30080`. Which
+    statement is correct?'
+  options:
+  - id: a
+    text: Clients inside the cluster use 80, the container receives 8080 and every
+      node listens on 30080.
+    explanation: Correct. Each field names a different port.
+  - id: b
+    text: Clients inside the cluster use 30080 and the container receives 80.
+    explanation: Inside the cluster clients use the Service port.
+  - id: c
+    text: The container must listen on 80 and 8080.
+    explanation: The container listens on the `targetPort` only.
+  - id: d
+    text: Every node forwards 8080 to the Service port 80.
+    explanation: The direction is reversed. Traffic goes from the Service port to
+      the target port.
+  correct_option: a
+  explanation: "`port` is the Service port, `targetPort` is the container port and
+    `nodePort` is the port opened on every node."
+- id: ats030-020-q03
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain readiness and endpoints
+  source_readings:
+  - sections/section-020/module-01/course-02-pod-addresses-and-network-implementation.md
+  prompt: A pod of a Deployment starts failing its readiness probe. What happens to
+    the Service that selects it?
+  options:
+  - id: a
+    text: The EndpointSlice marks the pod not ready and clients are no longer sent
+      to it, but the pod keeps running.
+    explanation: Correct. Only ready pods receive traffic. A failing readiness probe
+      does not restart the container.
+  - id: b
+    text: The Service is deleted until the pod is ready.
+    explanation: The Service stays.
+  - id: c
+    text: The kubelet restarts the container at once.
+    explanation: Restarts come from the liveness probe, not the readiness probe.
+  - id: d
+    text: The Service sends all traffic to the failing pod.
+    explanation: Not ready pods are removed from the ready endpoints.
+  correct_option: a
+  explanation: Readiness controls the endpoints. Liveness controls restarts.
+- id: ats030-020-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain what a cluster IP is
+  source_readings:
+  - sections/section-020/module-01/course-02-pod-addresses-and-network-implementation.md
+  prompt: A client pod cannot `ping` the cluster IP of a Service even though `wget`
+    to the Service port works. What explains this?
+  options:
+  - id: a
+    text: The cluster IP is virtual. `kube-proxy` programs forwarding rules for the
+      Service ports, so only the configured protocol and ports are forwarded.
+    explanation: Correct. No process or network interface holds the address.
+  - id: b
+    text: The Service is broken, and `wget` works by luck.
+    explanation: Both observations are normal.
+  - id: c
+    text: The cluster IP is the address of a hidden pod.
+    explanation: It belongs to no pod.
+  - id: d
+    text: ICMP is disabled in every Kubernetes cluster.
+    explanation: The rules forward only the Service ports, so ICMP is not answered
+      by the Service.
+  correct_option: a
+  explanation: A cluster IP exists in forwarding rules on the nodes, not on an interface.
+- id: ats030-020-q05
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Order the steps of a Service troubleshooting
+  source_readings:
+  - sections/section-020/module-02/course-01-tracing-a-service-request.md
+  prompt: A client gets `Connection refused` from `http://probe/`. Which first check
+    finds the most likely cause fastest?
+  options:
+  - id: a
+    text: Delete and recreate the Service.
+    explanation: This hides the cause.
+  - id: b
+    text: Restart the nodes.
+    explanation: This is not a diagnosis step.
+  - id: c
+    text: List the EndpointSlices of the Service and compare the selector with the
+      pod labels and the target port with the container port.
+    explanation: Correct. Endpoints show whether the Service has backends. The target
+      port shows where traffic goes.
+  - id: d
+    text: Change the type to `NodePort`.
+    explanation: The type does not fix a selector or port mismatch.
+  correct_option: c
+  explanation: Start with the endpoints, then compare selector, labels and ports.
+- id: ats030-020-q06
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Use a named target port
+  source_readings:
+  - sections/section-020/module-02/course-01-tracing-a-service-request.md
+  prompt: 'A Service uses `targetPort: http`. The Deployment changes the container
+    port number from 8080 to 9000 but keeps the port name `http`. What happens?'
+  options:
+  - id: a
+    text: The Service breaks until its `targetPort` number is edited.
+    explanation: The name is resolved per pod.
+  - id: b
+    text: The Service keeps working, because the EndpointSlice resolves the name `http`
+      to the new number.
+    explanation: Correct. A named target port follows the port name in the pod.
+  - id: c
+    text: The Service balances between 8080 and 9000.
+    explanation: Only the port named `http` is used.
+  - id: d
+    text: The API server rejects the Deployment.
+    explanation: Changing a port number is valid.
+  correct_option: b
+  explanation: A named `targetPort` is looked up in each pod, so the number can change.
+- id: ats030-020-q07
+  type: single_choice
+  difficulty: beginner
+  learning_objective: State the NodePort range
+  source_readings:
+  - sections/section-020/module-03/course-01-service-types-clusterip-nodeport-loadbalancer.md
+  prompt: What is the default range of a node port?
+  options:
+  - id: a
+    text: 1 to 1023
+    explanation: This is the range of well-known ports.
+  - id: b
+    text: 8000 to 8999
+    explanation: Not the default range.
+  - id: c
+    text: 30000 to 32767
+    explanation: Correct. The API server rejects other values unless the range is
+      changed.
+  - id: d
+    text: 32768 to 65535
+    explanation: These ports are commonly used for ephemeral client ports.
+  correct_option: c
+  explanation: The default is 30000 to 32767.
+- id: ats030-020-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain LoadBalancer behavior without a provider
+  source_readings:
+  - sections/section-020/module-03/course-01-service-types-clusterip-nodeport-loadbalancer.md
+  prompt: In a kind cluster a `LoadBalancer` Service shows `EXTERNAL-IP <pending>`
+    for a long time. Why?
+  options:
+  - id: a
+    text: The Service selector is wrong.
+    explanation: A wrong selector gives no endpoints and does not change `EXTERNAL-IP`.
+  - id: b
+    text: No component fulfils the request for an external load balancer. The Service
+      still works as a `NodePort` Service.
+    explanation: Correct. A cloud controller or an add-on writes the address.
+  - id: c
+    text: "`kube-proxy` is not running."
+    explanation: The pending state is about the external address.
+  - id: d
+    text: The Service port must be above 30000.
+    explanation: The port range applies to node ports.
+  correct_option: b
+  explanation: A `LoadBalancer` Service is a `NodePort` Service plus a request. A
+    provider must answer the request.
+- id: ats030-020-q09
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Explain a headless Service
+  source_readings:
+  - sections/section-020/module-03/course-02-headless-services-externalname-and-service-dns.md
+  prompt: 'A Service has `clusterIP: None`. What does a DNS lookup of its name return?'
+  options:
+  - id: a
+    text: A single cluster IP.
+    explanation: A headless Service has no cluster IP.
+  - id: b
+    text: A CNAME to another name.
+    explanation: That is an `ExternalName` Service.
+  - id: c
+    text: The IP addresses of the ready pods that it selects.
+    explanation: Correct. A headless Service creates no forwarding rules and answers
+      with pod addresses.
+  - id: d
+    text: No answer, because a headless Service has no DNS name.
+    explanation: It has a DNS name like every Service.
+  correct_option: c
+  explanation: A headless Service returns the pod addresses and does no load balancing.
+- id: ats030-020-q10
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Explain an ExternalName Service
+  source_readings:
+  - sections/section-020/module-03/course-02-headless-services-externalname-and-service-dns.md
+  prompt: 'An `ExternalName` Service in `outpost` is named `probe` and has `externalName:
+    probe.starfleet.svc.cluster.local`. A pod in `outpost` requests `http://probe/`.
+    What does cluster DNS return and who connects?'
+  options:
+  - id: a
+    text: A CNAME to the target name. The client resolves the target and connects
+      to it, so no proxy is involved.
+    explanation: Correct. The Service only renames the destination. The client port
+      is the port the client asks for.
+  - id: b
+    text: A cluster IP that forwards to the target.
+    explanation: An `ExternalName` Service has no cluster IP and no forwarding.
+  - id: c
+    text: The address of every pod of the target Service.
+    explanation: The answer is a CNAME, and the target name then resolves normally.
+  - id: d
+    text: An error, because an `ExternalName` Service needs a selector.
+    explanation: It never has a selector.
+  correct_option: a
+  explanation: An `ExternalName` Service is a DNS alias and carries no traffic.
+- id: ats030-020-q11
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Write a cross-namespace Service name
+  source_readings:
+  - sections/section-020/module-03/course-02-headless-services-externalname-and-service-dns.md
+  prompt: A pod in `outpost` must reach the Service `probe` in `starfleet`. Which
+    name resolves?
+  options:
+  - id: a
+    text: "`probe`"
+    explanation: The short name resolves only in the namespace of the pod.
+  - id: b
+    text: "`probe.starfleet`"
+    explanation: Correct. The search list of the pod adds `svc.cluster.local`.
+  - id: c
+    text: "`starfleet.probe`"
+    explanation: The Service name comes first.
+  - id: d
+    text: "`probe.outpost`"
+    explanation: This asks for a Service named probe in `outpost`.
+  correct_option: b
+  explanation: Use `<service>.<namespace>`, or the full name `<service>.<namespace>.svc.cluster.local`.

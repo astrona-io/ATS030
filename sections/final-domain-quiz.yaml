@@ -1,0 +1,373 @@
+# Final domain knowledge check across all three sections.
+schema_version: 1
+kind: question_bank
+id: ats030-final
+course_id: ATS030
+exam_code: CKAD
+status: draft
+provenance: Original practice material written for this course; not official exam
+  questions.
+scope:
+  type: domain
+  id: services-and-networking
+  title: Services and Networking
+questions:
+- id: ats030-final-q01
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Diagnose a missing network path across NetworkPolicy and Service
+  source_readings:
+  - sections/section-020/module-02/course-01-tracing-a-service-request.md
+  prompt: A client in `starfleet` gets `Connection timed out` from `http://probe/`.
+    `kubectl get endpointslices` shows two ready endpoints for `probe`. Which cause
+    fits best?
+  options:
+  - id: a
+    text: The Service selector matches no pod.
+    explanation: Then the EndpointSlice would be empty.
+  - id: b
+    text: A NetworkPolicy on the client or on the `probe` pods drops the connection.
+    explanation: Correct. The Service has ready backends, and a timeout points to
+      a dropped connection.
+  - id: c
+    text: The container does not listen on its port.
+    explanation: That gives a refusal, not a timeout.
+  - id: d
+    text: The Ingress class is missing.
+    explanation: Ingress is not in the path of a request between pods.
+  correct_option: b
+  explanation: Ready endpoints exclude a selector fault. A timeout points to a dropped
+    connection.
+- id: ats030-final-q02
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Write the DNS name for a Service in another namespace
+  source_readings:
+  - sections/section-020/module-03/course-02-headless-services-externalname-and-service-dns.md
+  prompt: A pod in `outpost` must request the Service `probe` in `starfleet` on port
+    80. Which command works?
+  options:
+  - id: a
+    text: "`wget -T 3 -O- http://probe/`"
+    explanation: The short name resolves in the namespace of the pod only.
+  - id: b
+    text: "`wget -T 3 -O- http://probe.starfleet/`"
+    explanation: Correct. This is `<service>.<namespace>`.
+  - id: c
+    text: "`wget -T 3 -O- http://starfleet/probe`"
+    explanation: This names a host called starfleet.
+  - id: d
+    text: "`wget -T 3 -O- http://probe.default/`"
+    explanation: This asks the namespace `default`.
+  correct_option: b
+  explanation: Use `<service>.<namespace>` across namespaces.
+- id: ats030-final-q03
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Combine default deny egress with DNS
+  source_readings:
+  - sections/section-010/module-02/course-01-dns-and-service-discovery.md
+  prompt: A namespace has a default deny policy for ingress and egress. The team adds
+    an egress rule from `shuttle` to `probe` on 8080 and an ingress rule on `probe`
+    from `shuttle` on 8080. `shuttle` runs `wget http://probe/` and fails with `bad
+    address`. What is missing?
+  options:
+  - id: a
+    text: An egress rule from `shuttle` to cluster DNS on port 53 for UDP and TCP.
+    explanation: Correct. The name must resolve before the connection is attempted.
+  - id: b
+    text: A second ingress rule on `probe` for port 80.
+    explanation: The policy sees port 8080.
+  - id: c
+    text: A `NodePort` Service for `probe`.
+    explanation: Node ports are not needed inside the cluster.
+  - id: d
+    text: An `ipBlock` for the Service cluster IP.
+    explanation: The name lookup fails before any Service address is known.
+  correct_option: a
+  explanation: Egress isolation blocks DNS until it is allowed.
+- id: ats030-final-q04
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Choose a Service type for an in-cluster database client
+  source_readings:
+  - sections/section-020/module-03/course-01-service-types-clusterip-nodeport-loadbalancer.md
+  prompt: Only pods in the cluster need to reach an application. Which Service type
+    is the right default?
+  options:
+  - id: a
+    text: "`ClusterIP`"
+    explanation: Correct. It gives a stable virtual address inside the cluster.
+  - id: b
+    text: "`NodePort`"
+    explanation: This opens a port on every node and is not needed.
+  - id: c
+    text: "`LoadBalancer`"
+    explanation: This asks for an external load balancer.
+  - id: d
+    text: "`ExternalName`"
+    explanation: This only aliases a DNS name.
+  correct_option: a
+  explanation: Use `ClusterIP` unless outside clients need access.
+- id: ats030-final-q05
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Choose a headless Service for per-pod addressing
+  source_readings:
+  - sections/section-020/module-03/course-02-headless-services-externalname-and-service-dns.md
+  prompt: A client must learn the address of every pod behind a name and choose between
+    them itself. Which Service fits?
+  options:
+  - id: a
+    text: 'A `ClusterIP` Service with `sessionAffinity: ClientIP`.'
+    explanation: This still returns one cluster IP.
+  - id: b
+    text: An `ExternalName` Service.
+    explanation: This returns a CNAME only.
+  - id: c
+    text: A `LoadBalancer` Service.
+    explanation: This returns one external address.
+  - id: d
+    text: 'A Service with `clusterIP: None`.'
+    explanation: Correct. DNS returns the addresses of the ready pods.
+  correct_option: d
+  explanation: A headless Service publishes pod addresses.
+- id: ats030-final-q06
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Allow one namespace and one pod label
+  source_readings:
+  - sections/section-010/module-03/course-02-peer-selectors-ip-blocks-and-ports.md
+  prompt: 'A policy has `from: [{namespaceSelector: {matchLabels: {team: web}}}, {podSelector:
+    {matchLabels: {app: api}}}]`. Which pod can connect?'
+  options:
+  - id: a
+    text: 'Only a pod labelled `app: api` in a namespace labelled `team: web`.'
+    explanation: That needs one entry with both selectors.
+  - id: b
+    text: 'Every pod in a namespace labelled `team: web`, and every pod labelled `app:
+      api` in the namespace of the policy.'
+    explanation: Correct. Two entries are an OR.
+  - id: c
+    text: No pod, because two entries conflict.
+    explanation: Entries never conflict.
+  - id: d
+    text: Only pods in the namespace of the policy.
+    explanation: The namespace selector adds other namespaces.
+  correct_option: b
+  explanation: Two entries mean OR.
+- id: ats030-final-q07
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Find the reason for 503 or 404 from an Ingress
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: A request through the Ingress controller returns an error. The Ingress backend
+    names the Service `probe` port 80 and `kubectl get endpointslices` shows no endpoints
+    for `probe`. What is the next step?
+  options:
+  - id: a
+    text: Change the pathType from `Prefix` to `Exact`.
+    explanation: The route reaches the Service, so the path is not the cause.
+  - id: b
+    text: Compare the Service selector with the pod labels and fix the mismatch.
+    explanation: Correct. An Ingress sends traffic only to ready endpoints.
+  - id: c
+    text: Create a second IngressClass.
+    explanation: The class is not the fault.
+  - id: d
+    text: Change the Service to `LoadBalancer`.
+    explanation: The type does not create endpoints.
+  correct_option: b
+  explanation: 'Follow the path: Ingress, Service, endpoints, pods.'
+- id: ats030-final-q08
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Use the Service port in an Ingress
+  source_readings:
+  - sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
+  prompt: A pod listens on 8080. The Service `probe` maps 80 to the named port `http`.
+    Which backend port does the Ingress use?
+  options:
+  - id: a
+    text: '8080'
+    explanation: This is the container port.
+  - id: b
+    text: "`http` or 80"
+    explanation: Correct. An Ingress backend names the Service port by name or number.
+  - id: c
+    text: '30080'
+    explanation: A node port is not used.
+  - id: d
+    text: '443'
+    explanation: This depends on TLS, not on the Service.
+  correct_option: b
+  explanation: The backend references a Service port.
+- id: ats030-final-q09
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Explain what a policy cannot do
+  source_readings:
+  - sections/section-010/module-03/course-01-default-deny-and-additive-policies.md
+  prompt: 'A namespace has a policy that allows ingress from `shuttle` to `probe`.
+    The team wants to block one pod labelled `app: shuttle-old` while `shuttle` stays
+    allowed. Which approach works?'
+  options:
+  - id: a
+    text: Add a deny policy for `shuttle-old`.
+    explanation: NetworkPolicy has no deny rule.
+  - id: b
+    text: Change the allow rule so that it selects only the pods that must stay allowed,
+      for example with a label that `shuttle-old` lacks.
+    explanation: Correct. Narrow the allow rule.
+  - id: c
+    text: Create a policy with a higher priority.
+    explanation: Policies have no priority.
+  - id: d
+    text: Delete the Service.
+    explanation: This breaks every client.
+  correct_option: b
+  explanation: Policies only add allowed traffic, so change what is allowed.
+- id: ats030-final-q10
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Know where TLS terminates for an Ingress
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: A client request to an Ingress host over HTTPS reaches the pod as plain
+    HTTP. Which component decrypted it?
+  options:
+  - id: a
+    text: The Service
+    explanation: A Service does not decrypt traffic.
+  - id: b
+    text: The kubelet
+    explanation: The kubelet is not in the data path.
+  - id: c
+    text: The API server
+    explanation: The API server is not in the data path.
+  - id: d
+    text: The Ingress controller
+    explanation: Correct. It terminates TLS with the certificate from the Secret.
+  correct_option: d
+  explanation: The controller terminates TLS.
+- id: ats030-final-q11
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Explain why a NodePort client uses the Service port inside the
+    cluster
+  source_readings:
+  - sections/section-020/module-03/course-01-service-types-clusterip-nodeport-loadbalancer.md
+  prompt: A `NodePort` Service has port 80 and node port 30080. Which request from
+    a pod in the cluster reaches it through the cluster IP?
+  options:
+  - id: a
+    text: "`http://<cluster-ip>:80/`"
+    explanation: Correct. Inside the cluster, clients use the cluster IP and the Service
+      port.
+  - id: b
+    text: "`http://<cluster-ip>:30080/`"
+    explanation: The node port is opened on the nodes, not on the cluster IP.
+  - id: c
+    text: "`http://<cluster-ip>:8080/`"
+    explanation: 8080 is the container port.
+  - id: d
+    text: "`http://<service-name>:30080/`"
+    explanation: The node port is not part of the Service DNS name.
+  correct_option: a
+  explanation: "`ClusterIP` uses the Service port. The node port belongs to node addresses."
+- id: ats030-final-q12
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Check labels of a namespace selector
+  source_readings:
+  - sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
+  prompt: 'A policy uses `namespaceSelector: {matchLabels: {kubernetes.io/metadata.name:
+    outpost}}`. Why does this label work without labelling the namespace by hand?'
+  options:
+  - id: a
+    text: The API server sets the label `kubernetes.io/metadata.name` on every namespace
+      automatically.
+    explanation: Correct. It holds the namespace name.
+  - id: b
+    text: The label is created by the network plugin.
+    explanation: The API server sets it.
+  - id: c
+    text: Policies match namespace names directly.
+    explanation: Policies match labels.
+  - id: d
+    text: The label exists only in the `default` namespace.
+    explanation: It exists on every namespace.
+  correct_option: a
+  explanation: Every namespace carries `kubernetes.io/metadata.name`.
+- id: ats030-final-q13
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Troubleshoot an Ingress TLS error by names
+  source_readings:
+  - sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
+  prompt: HTTPS to `portal.local` works for a browser that trusts the CA, but another
+    client gets a certificate name error for `wrong.local`. Which statement is correct?
+  options:
+  - id: a
+    text: The Ingress must be changed to `Exact`.
+    explanation: The path type is unrelated.
+  - id: b
+    text: The certificate holds `portal.local` only, so a client that requests `wrong.local`
+      correctly rejects it.
+    explanation: Correct. The server name must be in the certificate.
+  - id: c
+    text: The Service port is wrong.
+    explanation: A port error would not cause a name error.
+  - id: d
+    text: The cluster DNS is down.
+    explanation: The error is about the certificate.
+  correct_option: b
+  explanation: The server name must match the certificate.
+- id: ats030-final-q14
+  type: single_choice
+  difficulty: intermediate
+  learning_objective: Pick the first command to check a Service
+  source_readings:
+  - sections/section-020/module-02/course-01-tracing-a-service-request.md
+  prompt: Which command shows the pods that currently back the Service `probe` and
+    whether they are ready?
+  options:
+  - id: a
+    text: "`kubectl -n starfleet get endpointslices -l kubernetes.io/service-name=probe`"
+    explanation: Correct. It lists the endpoints and their conditions.
+  - id: b
+    text: "`kubectl -n starfleet get nodes`"
+    explanation: Nodes do not show Service backends.
+  - id: c
+    text: "`kubectl get ingressclass`"
+    explanation: Ingress classes are not Service endpoints.
+  - id: d
+    text: "`kubectl -n starfleet get networkpolicy`"
+    explanation: Policies do not show backends.
+  correct_option: a
+  explanation: EndpointSlices list the backends.
+- id: ats030-final-q15
+  type: single_choice
+  difficulty: advanced
+  learning_objective: Choose the repair for a Service that has endpoints but refuses
+  source_readings:
+  - sections/section-020/module-01/course-01-selectors-ports-and-backends.md
+  prompt: 'A Service has two ready endpoints, but the client gets `Connection refused`.
+    The Service has `targetPort: 9090` and the container listens on 8080. What is
+    the repair?'
+  options:
+  - id: a
+    text: Change the selector.
+    explanation: The selector already matches the pods.
+  - id: b
+    text: Change `targetPort` to 8080 or to the container port name.
+    explanation: Correct. The Service sends to a port where nothing listens.
+  - id: c
+    text: Add a default deny policy.
+    explanation: This does not fix a refusal.
+  - id: d
+    text: Change the type to `NodePort`.
+    explanation: The type does not change the target.
+  correct_option: b
+  explanation: A refusal with ready endpoints points to the target port.

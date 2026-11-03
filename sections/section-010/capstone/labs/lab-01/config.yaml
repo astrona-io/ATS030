@@ -1,0 +1,53 @@
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-030-capstone-010
+  docs:
+    prerequisites: docs/prerequisites.md
+    question: question.md
+    solution: solution.md
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.0@sha256:452d707d4862f52530247495d180205e029056831160e22870e37e3f6c1ac31f
+    preloadImages:
+    - docker.io/library/python:3.13-alpine
+    - docker.io/library/busybox:1.37.0
+bootstrap:
+  init:
+  - name: seed-lab
+    type: file
+    source: bootstrap/setup.sh
+testing:
+  init:
+  - name: reference-result
+    type: file
+    source: solution/apply.sh
+validation:
+  scripts:
+  - name: validate-stale-removed
+    description: The allow-everything policy is gone
+    type: file
+    source: validation/validate-stale-removed.sh
+    hint: Delete NetworkPolicy allow-everything from starfleet. Do not leave another rule that allows all sources.
+  - name: validate-default-deny-all
+    description: starfleet is closed for ingress and egress
+    type: file
+    source: validation/validate-default-deny-all.sh
+    hint: Create default-deny-all with an empty podSelector, policyTypes Ingress and Egress, and no rules.
+  - name: validate-probe-ingress
+    description: probe accepts only shuttle on 8080
+    type: file
+    source: validation/validate-probe-ingress.sh
+    hint: Create probe-ingress selecting app=probe with one from entry that holds a podSelector for app=shuttle and port 8080.
+  - name: validate-shuttle-egress
+    description: shuttle may reach only probe and DNS
+    type: file
+    source: validation/validate-shuttle-egress.sh
+    hint: Create shuttle-egress for app=shuttle with one rule to app=probe on 8080 and one rule to the namespace kube-system on port 53 for UDP and TCP.
+  - name: validate-behavior
+    description: Live traffic matches the design
+    type: file
+    source: validation/validate-behavior.sh
+    hint: shuttle must reach probe by name, drifter must time out, and shuttle must time out when it contacts the drifter pod address.
+teardown:
+  keepCluster: false

@@ -1,0 +1,43 @@
+apiVersion: astrona.io/v1
+metadata:
+  name: ats-030-lab-010-03-01
+  docs:
+    prerequisites: docs/prerequisites.md
+    question: question.md
+    solution: solution.md
+runtime:
+  type: kind
+  kind:
+    image: kindest/node:v1.35.0@sha256:452d707d4862f52530247495d180205e029056831160e22870e37e3f6c1ac31f
+    preloadImages:
+    - docker.io/library/python:3.13-alpine
+    - docker.io/library/busybox:1.37.0
+bootstrap:
+  init:
+  - name: seed-lab
+    type: file
+    source: bootstrap/setup.sh
+testing:
+  init:
+  - name: reference-result
+    type: file
+    source: solution/apply.sh
+validation:
+  scripts:
+  - name: validate-default-deny
+    description: Namespace starfleet has a default deny ingress policy
+    type: file
+    source: validation/validate-default-deny.sh
+    hint: Create NetworkPolicy default-deny-ingress in starfleet with an empty podSelector, policyTypes Ingress and no rules.
+  - name: validate-drifter-allowed
+    description: One policy allows only the drifter pod of outpost to probe
+    type: file
+    source: validation/validate-drifter-allowed.sh
+    hint: Name the policy probe-from-drifter and put the namespaceSelector and the podSelector in the same from entry.
+  - name: validate-behavior
+    description: drifter reaches probe and shuttle times out
+    type: file
+    source: validation/validate-behavior.sh
+    hint: Both selectors in one from entry means AND. Port 8080 is the container port.
+teardown:
+  keepCluster: false

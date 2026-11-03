@@ -5,8 +5,7 @@ version 1 and the contract in `schemas/question-bank.schema.json`. This is an
 authoring format for future application integration, not an existing Astrona
 quiz API. No YAML question file is registered as a Markdown reading.
 
-Each section bank follows that section's final module summary. The domain bank
-follows the final section bank. Banks contain 5–15 original single-choice
+Each section quiz (`sections/section-0N0/quiz.yaml`) is listed in `astrona.yaml` as a `type: quiz` entry after the section capstone with `pass_score: 70`. The final domain quiz (`sections/final-domain-quiz.yaml`) follows the last section quiz. The `placement` field is not used. Banks contain 5–15 original single-choice
 questions, scoped to concepts taught in the course. They remain draft for review.
 
 ## Fields And Rendering
