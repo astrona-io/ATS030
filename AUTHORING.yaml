@@ -55,7 +55,7 @@ sections:
       after_reading: sections/section-010/module-01/course-02-traffic-isolation-and-allowed-peers.md
       objective: Enforce both an allowed same-namespace peer and a denied peer in
         another namespace.
-      status: draft
+      status: alpha
       runtime_verification: pending
   - id: module-02
     title: Dependency-Aware Network Isolation
@@ -82,7 +82,7 @@ sections:
       after_reading: sections/section-010/module-02/course-01-dns-and-service-discovery.md
       objective: Allow name resolution and application access while denying a healthy
         unrelated listener.
-      status: draft
+      status: alpha
       runtime_verification: pending
 - id: section-020
   title: Provide and troubleshoot access to applications via services
@@ -118,7 +118,7 @@ sections:
       after_reading: sections/section-020/module-01/course-01-selectors-ports-and-backends.md
       objective: Restore backend selection while preserving the existing client and
         listener ports.
-      status: draft
+      status: alpha
       runtime_verification: pending
   - id: module-02
     title: Troubleshooting A Service Request
@@ -144,7 +144,7 @@ sections:
       path: sections/section-020/module-02/labs/lab-01
       objective: Restore the existing client request by correcting the Service backend
         mapping.
-      status: draft
+      status: alpha
       runtime_verification: pending
 - id: section-030
   title: Use Ingress rules to expose applications
@@ -176,7 +176,7 @@ sections:
       path: sections/section-030/module-01/labs/lab-01
       after_reading: sections/section-030/module-01/course-01-matching-ingress-hosts-paths-and-service-backends.md
       objective: Verify host matching and backend routing through the controller.
-      status: draft
+      status: alpha
       runtime_verification: pending
   - id: module-02
     title: External Request Diagnosis
@@ -203,12 +203,12 @@ sections:
       after_reading: sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
       objective: Trace a failed external route to a nonexistent backend reference
         and repair it.
-      status: draft
+      status: alpha
       runtime_verification: pending
     - id: lab-02
       path: sections/section-030/module-02/labs/lab-02
       after_reading: sections/section-030/module-02/course-01-tracing-an-external-request-to-the-application.md
       objective: Route HTTPS through the controller and verify both matching and mismatched
         certificate identities.
-      status: draft
+      status: alpha
       runtime_verification: pending
